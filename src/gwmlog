@@ -1,0 +1,1556 @@
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 1 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 2 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 3 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 4 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+----- 5 -----
+X: FocusIn  14689164  Normal, Nonlinear.
+----- 6 -----
+G: FocusIn  14689164
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689180  Normal, Virtual.
+G: FocusIn  14689180
+X: FocusIn  14689181  Normal, Virtual.
+G: FocusIn  14689181
+X: FocusIn  14689185  Normal, Virtual.
+G: FocusIn  14689185
+X: FocusIn  14689187  Normal, Virtual.
+G: FocusIn  14689187
+X: FocusIn  14689188  Normal, Virtual.
+G: FocusIn  14689188
+X: FocusIn  14689189  Normal, Ancestor.
+----- 7 -----
+G: FocusIn  14689189
+X: FocusOut 14689189  Normal, Nonlinear.
+G: FocusOut 14689189
+X: FocusOut 14689188  Normal, Nonlinear virtual.
+G: FocusOut 14689188
+X: FocusOut 14689187  Normal, Nonlinear virtual.
+G: FocusOut 14689187
+X: FocusOut 14689185  Normal, Nonlinear virtual.
+G: FocusOut 14689185
+X: FocusOut 14689181  Normal, Nonlinear virtual.
+G: FocusOut 14689181
+X: FocusOut 14689180  Normal, Nonlinear virtual.
+G: FocusOut 14689180
+X: FocusOut 14689179  Normal, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  Normal, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 8 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689504  Normal, Nonlinear.
+----- 9 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 10 -----
+G: Enter    14689179
+X: Leave    14689179  From Grab, Ancestor.
+X: Leave    14689177  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+----- 11 -----
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14689164  From Ungrab, Virtual.
+X: Enter    14689177  From Ungrab, Virtual.
+X: Enter    14689179  From Ungrab, Ancestor.
+X: Leave    14689179  From Grab, Ancestor.
+X: Leave    14689177  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+X: Enter    46  From Grab, Inferior.
+G: Leave    14689179
+G: Leave    14689177
+G: Leave    14689164
+G: Leave    14689163
+G: Enter    46
+----- 12 -----
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14689164  From Ungrab, Virtual.
+G: Leave    46
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689177  From Ungrab, Virtual.
+G: Enter    14689177
+X: Enter    14689179  From Ungrab, Ancestor.
+----- 13 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689504  Normal, Nonlinear.
+----- 14 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Leave    14689164  Normal, Nonlinear virtual.
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 15 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 16 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 17 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689504
+X: Enter    14689504  Normal, Nonlinear.
+----- 18 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 19 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 20 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 21 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 22 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 23 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 24 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 25 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 26 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 27 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 28 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 29 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 30 -----
+G: FocusIn  46
+X: Enter    14688768  Normal, Nonlinear.
+----- 31 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Leave    14689164
+G: Leave    14689163
+G: Enter    14688767
+G: Enter    14688768
+X: Leave    14688768  Normal, Nonlinear.
+----- 32 -----
+X: Leave    46  From Ungrab, Inferior.
+----- 33 -----
+X: Enter    46  From Grab, Inferior.
+----- 34 -----
+G: Leave    14688768
+G: Leave    14688767
+G: Enter    46
+X: Leave    46  From Ungrab, Inferior.
+----- 35 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 36 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 37 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 38 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 39 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    46
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689504  Normal, Nonlinear.
+----- 40 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 41 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 42 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 43 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 44 -----
+G: FocusIn  46
+X: Enter    14688772  Normal, Nonlinear.
+----- 45 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Leave    14689164
+G: Leave    14689163
+G: Enter    14688771
+G: Enter    14688772
+X: Leave    14688772  Normal, Ancestor.
+X: Enter    46  Normal, Inferior.
+----- 46 -----
+G: Leave    14688772
+G: Leave    14688771
+G: Enter    46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 47 -----
+X: Leave    46  Normal, Inferior.
+----- 48 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 49 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 50 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 51 -----
+G: FocusIn  46
+X: Enter    46  Normal, Inferior.
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 52 -----
+X: Leave    46  Normal, Inferior.
+----- 53 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 54 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+----- 55 -----
+X: Enter    46  From Grab, Inferior.
+----- 56 -----
+X: Leave    46  From Ungrab, Inferior.
+----- 57 -----
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14688772  From Ungrab, Ancestor.
+----- 58 -----
+G: Leave    46
+G: Enter    14688771
+G: Enter    14688772
+X: Leave    14688772  Normal, Ancestor.
+X: Enter    46  Normal, Inferior.
+----- 59 -----
+G: Leave    14688772
+G: Leave    14688771
+G: Enter    46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 60 -----
+X: Leave    46  Normal, Inferior.
+----- 61 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 62 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 63 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 64 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 65 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 66 -----
+G: FocusIn  46
+X: Enter    46  Normal, Inferior.
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 67 -----
+X: Leave    46  Normal, Inferior.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 68 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14688770  From Ungrab, Ancestor.
+----- 69 -----
+G: Leave    46
+G: Enter    14688769
+G: Enter    14688770
+X: Leave    14688770  Normal, Nonlinear.
+----- 70 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 71 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 72 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 73 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 74 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14688770
+G: Leave    14688769
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689504  Normal, Nonlinear.
+----- 75 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 76 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Inferior.
+X: Enter    14689180  Normal, Virtual.
+G: Enter    14689180
+X: Enter    14689181  Normal, Virtual.
+G: Enter    14689181
+X: Enter    14689185  Normal, Virtual.
+G: Enter    14689185
+X: Enter    14689187  Normal, Ancestor.
+----- 77 -----
+G: Enter    14689187
+X: Leave    14689187  Normal, Inferior.
+X: Enter    14689198  Normal, Ancestor.
+----- 78 -----
+G: Enter    14689198
+X: Leave    14689198  Normal, Ancestor.
+X: Enter    14689187  Normal, Inferior.
+----- 79 -----
+G: Leave    14689198
+X: Leave    14689187  Normal, Inferior.
+X: Enter    14689195  Normal, Ancestor.
+----- 80 -----
+G: Enter    14689195
+X: Leave    14689195  Normal, Ancestor.
+X: Enter    14689187  Normal, Inferior.
+----- 81 -----
+G: Leave    14689195
+X: Leave    14689187  Normal, Inferior.
+X: Enter    14689192  Normal, Ancestor.
+----- 82 -----
+G: Enter    14689192
+X: Leave    14689192  Normal, Nonlinear.
+X: Enter    14689188  Normal, Nonlinear virtual.
+G: Leave    14689192
+G: Enter    14689188
+X: Enter    14689191  Normal, Nonlinear.
+----- 83 -----
+G: Enter    14689191
+X: Leave    14689191  Normal, Ancestor.
+X: Leave    14689188  Normal, Virtual.
+X: Enter    14689187  Normal, Inferior.
+----- 84 -----
+G: Leave    14689191
+G: Leave    14689188
+X: Leave    14689187  Normal, Ancestor.
+X: Leave    14689185  Normal, Virtual.
+X: Leave    14689181  Normal, Virtual.
+X: Leave    14689180  Normal, Virtual.
+X: Enter    14689179  Normal, Inferior.
+----- 85 -----
+G: Leave    14689187
+G: Leave    14689185
+G: Leave    14689181
+G: Leave    14689180
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689165  Normal, Nonlinear virtual.
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689165
+X: Enter    14689170  Normal, Nonlinear.
+----- 86 -----
+G: Enter    14689170
+X: Leave    14689170  From Grab, Ancestor.
+X: Leave    14689165  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+X: Enter    14689164  From Ungrab, Virtual.
+X: Enter    14689165  From Ungrab, Virtual.
+X: Enter    14689170  From Ungrab, Ancestor.
+----- 87 -----
+X: FocusIn  14689164  Normal, Ancestor.
+----- 88 -----
+G: FocusIn  14689164
+X: Leave    14689170  Normal, Nonlinear.
+X: Leave    14689165  Normal, Nonlinear virtual.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689170
+G: Leave    14689165
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 89 -----
+G: Enter    14689179
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689258  Normal, Virtual.
+G: FocusIn  14689258
+X: FocusIn  14689259  Normal, Ancestor.
+----- 90 -----
+G: FocusIn  14689259
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689165  Normal, Nonlinear.
+----- 91 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689165
+X: Leave    14689165  Normal, Ancestor.
+X: Leave    14689164  Normal, Virtual.
+X: Enter    46  Normal, Inferior.
+G: Leave    14689165
+G: Leave    14689164
+G: Leave    14689163
+G: Enter    46
+X: FocusOut 14689259  Normal, Nonlinear.
+G: FocusOut 14689259
+X: FocusOut 14689258  Normal, Nonlinear virtual.
+G: FocusOut 14689258
+X: FocusOut 14689254  Normal, Nonlinear virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Nonlinear virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Nonlinear virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Nonlinear virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  Normal, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 92 -----
+X: Leave    46  Normal, Inferior.
+X: Enter    14689164  Normal, Virtual.
+G: Leave    46
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689165  Normal, Ancestor.
+----- 93 -----
+G: Enter    14689165
+X: FocusOut 14689165  Normal, Pointer.
+X: FocusOut 14689164  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689165  Normal, Pointer.
+----- 94 -----
+X: Leave    14689165  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689165
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 95 -----
+G: Enter    14689179
+X: FocusIn  14689164  Normal, Ancestor.
+G: FocusIn  14689164
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689258  Normal, Virtual.
+G: FocusIn  14689258
+X: FocusIn  14689259  Normal, Ancestor.
+----- 96 -----
+G: FocusIn  14689259
+X: FocusOut 14689259  Normal, Ancestor.
+G: FocusOut 14689259
+X: FocusOut 14689258  Normal, Virtual.
+G: FocusOut 14689258
+X: FocusOut 14689254  Normal, Virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Virtual.
+G: FocusOut 14689177
+X: FocusIn  14689164  Normal, Inferior.
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689261  Normal, Virtual.
+G: FocusIn  14689261
+X: FocusIn  14689262  Normal, Ancestor.
+----- 97 -----
+G: FocusIn  14689262
+X: FocusOut 14689262  Normal, Ancestor.
+G: FocusOut 14689262
+X: FocusOut 14689261  Normal, Virtual.
+G: FocusOut 14689261
+X: FocusOut 14689254  Normal, Virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Virtual.
+G: FocusOut 14689177
+X: FocusIn  14689164  Normal, Inferior.
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689261  Normal, Virtual.
+G: FocusIn  14689261
+X: FocusIn  14689264  Normal, Ancestor.
+----- 98 -----
+G: FocusIn  14689264
+X: FocusOut 14689264  Normal, Ancestor.
+G: FocusOut 14689264
+X: FocusOut 14689261  Normal, Virtual.
+G: FocusOut 14689261
+X: FocusOut 14689254  Normal, Virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Virtual.
+G: FocusOut 14689177
+X: FocusIn  14689164  Normal, Inferior.
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689270  Normal, Virtual.
+G: FocusIn  14689270
+X: FocusIn  14689274  Normal, Virtual.
+G: FocusIn  14689274
+X: FocusIn  14689276  Normal, Virtual.
+G: FocusIn  14689276
+X: FocusIn  14689277  Normal, Virtual.
+G: FocusIn  14689277
+X: FocusIn  14689280  Normal, Ancestor.
+----- 99 -----
+G: FocusIn  14689280
+X: FocusOut 14689280  Normal, Ancestor.
+G: FocusOut 14689280
+X: FocusOut 14689277  Normal, Virtual.
+G: FocusOut 14689277
+X: FocusOut 14689276  Normal, Virtual.
+G: FocusOut 14689276
+X: FocusOut 14689274  Normal, Virtual.
+G: FocusOut 14689274
+X: FocusOut 14689270  Normal, Virtual.
+G: FocusOut 14689270
+X: FocusOut 14689247  Normal, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Virtual.
+G: FocusOut 14689177
+X: FocusIn  14689164  Normal, Inferior.
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689270  Normal, Virtual.
+G: FocusIn  14689270
+X: FocusIn  14689274  Normal, Virtual.
+G: FocusIn  14689274
+X: FocusIn  14689276  Normal, Virtual.
+G: FocusIn  14689276
+X: FocusIn  14689282  Normal, Virtual.
+G: FocusIn  14689282
+X: FocusIn  14689285  Normal, Ancestor.
+----- 100 -----
+G: FocusIn  14689285
+X: FocusOut 14689285  From Grab, Ancestor.
+G: FocusOut 14689285
+X: FocusOut 14689282  From Grab, Virtual.
+G: FocusOut 14689282
+X: FocusOut 14689276  From Grab, Virtual.
+G: FocusOut 14689276
+X: FocusOut 14689274  From Grab, Virtual.
+G: FocusOut 14689274
+X: FocusOut 14689270  From Grab, Virtual.
+G: FocusOut 14689270
+X: FocusOut 14689247  From Grab, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  From Grab, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  From Grab, Virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  From Grab, Virtual.
+----- 101 -----
+G: FocusOut 14689164
+X: FocusIn  14689164  From Ungrab, Virtual.
+G: FocusIn  14689164
+X: FocusIn  14689177  From Ungrab, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  From Ungrab, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  From Ungrab, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689270  From Ungrab, Virtual.
+G: FocusIn  14689270
+X: FocusIn  14689274  From Ungrab, Virtual.
+G: FocusIn  14689274
+X: FocusIn  14689276  From Ungrab, Virtual.
+G: FocusIn  14689276
+X: FocusIn  14689282  From Ungrab, Virtual.
+G: FocusIn  14689282
+X: FocusIn  14689285  From Ungrab, Ancestor.
+----- 102 -----
+G: FocusIn  14689285
+X: FocusOut 14689285  From Grab, Ancestor.
+G: FocusOut 14689285
+X: FocusOut 14689282  From Grab, Virtual.
+G: FocusOut 14689282
+X: FocusOut 14689276  From Grab, Virtual.
+G: FocusOut 14689276
+X: FocusOut 14689274  From Grab, Virtual.
+G: FocusOut 14689274
+X: FocusOut 14689270  From Grab, Virtual.
+G: FocusOut 14689270
+X: FocusOut 14689247  From Grab, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  From Grab, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  From Grab, Virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  From Grab, Virtual.
+----- 103 -----
+G: FocusOut 14689164
+X: FocusIn  14689164  From Ungrab, Virtual.
+G: FocusIn  14689164
+X: FocusIn  14689177  From Ungrab, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  From Ungrab, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  From Ungrab, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689270  From Ungrab, Virtual.
+G: FocusIn  14689270
+X: FocusIn  14689274  From Ungrab, Virtual.
+G: FocusIn  14689274
+X: FocusIn  14689276  From Ungrab, Virtual.
+G: FocusIn  14689276
+X: FocusIn  14689282  From Ungrab, Virtual.
+G: FocusIn  14689282
+X: FocusIn  14689285  From Ungrab, Ancestor.
+----- 104 -----
+G: FocusIn  14689285
+X: Leave    14689179  From Grab, Nonlinear.
+X: Leave    14689177  From Grab, Nonlinear virtual.
+X: Leave    14689164  From Grab, Nonlinear virtual.
+X: Enter    14689521  From Grab, Nonlinear.
+G: Enter    14689520
+G: Enter    14689521
+X: FocusOut 14689285  From Grab, Nonlinear.
+G: FocusOut 14689285
+X: FocusOut 14689282  From Grab, Nonlinear virtual.
+G: FocusOut 14689282
+X: FocusOut 14689276  From Grab, Nonlinear virtual.
+G: FocusOut 14689276
+X: FocusOut 14689274  From Grab, Nonlinear virtual.
+G: FocusOut 14689274
+X: FocusOut 14689270  From Grab, Nonlinear virtual.
+G: FocusOut 14689270
+X: FocusOut 14689247  From Grab, Nonlinear virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  From Grab, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  From Grab, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  From Grab, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusIn  14689521  From Grab, Nonlinear.
+G: FocusIn  14689521
+----- 105 -----
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689165  Normal, Nonlinear.
+----- 106 -----
+G: Leave    14689521
+G: Leave    14689520
+X: Leave    14689165  Normal, Ancestor.
+X: Leave    14689164  Normal, Virtual.
+X: Enter    46  Normal, Inferior.
+----- 107 -----
+X: Leave    46  Normal, Inferior.
+X: Enter    14689164  Normal, Virtual.
+X: Enter    14689165  Normal, Ancestor.
+----- 108 -----
+X: Leave    14689165  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+X: Enter    14689179  Normal, Nonlinear.
+----- 109 -----
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689165  Normal, Nonlinear.
+----- 110 -----
+X: Leave    14689165  Normal, Ancestor.
+X: Leave    14689164  Normal, Virtual.
+X: Enter    46  Normal, Inferior.
+----- 111 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Leave    14689164
+G: Leave    14689163
+G: Enter    46
+X: Leave    14689521  From Ungrab, Ancestor.
+X: FocusOut 14689521  From Ungrab, Nonlinear.
+G: FocusOut 14689521
+X: FocusIn  14689164  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689164
+X: FocusIn  14689177  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689247
+X: FocusIn  14689270  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689270
+X: FocusIn  14689274  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689274
+X: FocusIn  14689276  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689276
+X: FocusIn  14689282  From Ungrab, Nonlinear virtual.
+G: FocusIn  14689282
+X: FocusIn  14689285  From Ungrab, Nonlinear.
+G: FocusIn  14689285
+X: FocusOut 14689285  Normal, Nonlinear.
+G: FocusOut 14689285
+X: FocusOut 14689282  Normal, Nonlinear virtual.
+G: FocusOut 14689282
+X: FocusOut 14689276  Normal, Nonlinear virtual.
+G: FocusOut 14689276
+X: FocusOut 14689274  Normal, Nonlinear virtual.
+G: FocusOut 14689274
+X: FocusOut 14689270  Normal, Nonlinear virtual.
+G: FocusOut 14689270
+X: FocusOut 14689247  Normal, Nonlinear virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  Normal, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Nonlinear.
+----- 112 -----
+G: FocusIn  14689164
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    46
+G: Enter    14689163
+G: Enter    14689164
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 113 -----
+G: Enter    14689179
+X: FocusOut 14689164  Normal, Ancestor.
+----- 114 -----
+G: FocusOut 14689164
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 115 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 116 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 117 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+----- 118 -----
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689179
+G: Leave    14689177
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 119 -----
+G: Enter    14689179
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+----- 120 -----
+X: FocusOut 14689179  Normal, Pointer.
+X: FocusOut 14689177  Normal, Pointer.
+X: FocusOut 14689164  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+----- 121 -----
+X: FocusIn  14689164  Normal, Virtual.
+G: FocusIn  14689164
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689258  Normal, Virtual.
+G: FocusIn  14689258
+X: FocusIn  14689259  Normal, Ancestor.
+----- 122 -----
+G: FocusIn  14689259
+X: FocusOut 14689259  Normal, Ancestor.
+G: FocusOut 14689259
+X: FocusOut 14689258  Normal, Virtual.
+G: FocusOut 14689258
+X: FocusOut 14689254  Normal, Virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Virtual.
+G: FocusOut 14689177
+X: FocusIn  14689164  Normal, Inferior.
+----- 123 -----
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689165  Normal, Nonlinear.
+----- 124 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689165
+X: Leave    14689165  Normal, Nonlinear.
+X: Leave    14689164  Normal, Nonlinear virtual.
+X: FocusOut 14689164  Normal, Nonlinear.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 125 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+----- 126 -----
+X: Leave    46  From Ungrab, Inferior.
+----- 127 -----
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689165
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 128 -----
+G: Enter    14689179
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+----- 129 -----
+X: FocusOut 14689179  Normal, Pointer.
+X: FocusOut 14689177  Normal, Pointer.
+X: FocusOut 14689164  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+----- 130 -----
+X: Leave    14689179  Normal, Inferior.
+X: Enter    14689247  Normal, Virtual.
+G: Enter    14689247
+X: Enter    14689270  Normal, Virtual.
+G: Enter    14689270
+X: Enter    14689274  Normal, Virtual.
+G: Enter    14689274
+X: Enter    14689276  Normal, Ancestor.
+----- 131 -----
+G: Enter    14689276
+X: Leave    14689276  Normal, Inferior.
+X: Enter    14689277  Normal, Ancestor.
+----- 132 -----
+G: Enter    14689277
+X: Leave    14689277  Normal, Ancestor.
+X: Enter    14689276  Normal, Inferior.
+----- 133 -----
+G: Leave    14689277
+X: Leave    14689276  Normal, Inferior.
+X: Enter    14689282  Normal, Ancestor.
+----- 134 -----
+G: Enter    14689282
+X: Leave    14689282  Normal, Ancestor.
+X: Enter    14689276  Normal, Inferior.
+----- 135 -----
+G: Leave    14689282
+X: Leave    14689276  Normal, Inferior.
+X: Enter    14689291  Normal, Virtual.
+G: Enter    14689291
+X: Enter    14689292  Normal, Virtual.
+G: Enter    14689292
+X: Enter    14689295  Normal, Virtual.
+G: Enter    14689295
+X: Enter    14689297  Normal, Ancestor.
+----- 136 -----
+G: Enter    14689297
+X: Leave    14689297  Normal, Ancestor.
+X: Leave    14689295  Normal, Virtual.
+X: Leave    14689292  Normal, Virtual.
+X: Leave    14689291  Normal, Virtual.
+X: Enter    14689276  Normal, Inferior.
+----- 137 -----
+G: Leave    14689297
+G: Leave    14689295
+G: Leave    14689292
+G: Leave    14689291
+X: Leave    14689276  Normal, Inferior.
+X: Enter    14689301  Normal, Virtual.
+G: Enter    14689301
+X: Enter    14689302  Normal, Virtual.
+G: Enter    14689302
+X: Enter    14689305  Normal, Virtual.
+G: Enter    14689305
+X: Enter    14689307  Normal, Ancestor.
+----- 138 -----
+G: Enter    14689307
+X: Leave    14689307  Normal, Ancestor.
+X: Leave    14689305  Normal, Virtual.
+X: Leave    14689302  Normal, Virtual.
+X: Leave    14689301  Normal, Virtual.
+X: Enter    14689276  Normal, Inferior.
+----- 139 -----
+G: Leave    14689307
+G: Leave    14689305
+G: Leave    14689302
+G: Leave    14689301
+X: Leave    14689276  Normal, Ancestor.
+X: Leave    14689274  Normal, Virtual.
+X: Leave    14689270  Normal, Virtual.
+X: Leave    14689247  Normal, Virtual.
+X: Enter    14689179  Normal, Inferior.
+----- 140 -----
+G: Leave    14689276
+G: Leave    14689274
+G: Leave    14689270
+G: Leave    14689247
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 141 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 142 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 143 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 144 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 145 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689179
+G: Leave    14689177
+X: Enter    14689504  Normal, Nonlinear.
+----- 146 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 147 -----
+G: Enter    14689179
+X: FocusIn  14689164  Normal, Virtual.
+G: FocusIn  14689164
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689258  Normal, Virtual.
+G: FocusIn  14689258
+X: FocusIn  14689259  Normal, Ancestor.
+----- 148 -----
+G: FocusIn  14689259
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689504  Normal, Nonlinear.
+----- 149 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 150 -----
+X: FocusOut 14689259  Normal, Nonlinear.
+G: FocusOut 14689259
+X: FocusOut 14689258  Normal, Nonlinear virtual.
+G: FocusOut 14689258
+X: FocusOut 14689254  Normal, Nonlinear virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Nonlinear virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Nonlinear virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Nonlinear virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  Normal, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 151 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 152 -----
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Nonlinear.
+----- 153 -----
+G: FocusIn  14689164
+X: FocusOut 14689164  Normal, Inferior.
+X: FocusIn  14689177  Normal, Virtual.
+G: FocusIn  14689177
+X: FocusIn  14689179  Normal, Virtual.
+G: FocusIn  14689179
+X: FocusIn  14689247  Normal, Virtual.
+G: FocusIn  14689247
+X: FocusIn  14689248  Normal, Virtual.
+G: FocusIn  14689248
+X: FocusIn  14689252  Normal, Virtual.
+G: FocusIn  14689252
+X: FocusIn  14689254  Normal, Virtual.
+G: FocusIn  14689254
+X: FocusIn  14689258  Normal, Virtual.
+G: FocusIn  14689258
+X: FocusIn  14689259  Normal, Ancestor.
+----- 154 -----
+G: FocusIn  14689259
+X: FocusOut 14689259  Normal, Nonlinear.
+G: FocusOut 14689259
+X: FocusOut 14689258  Normal, Nonlinear virtual.
+G: FocusOut 14689258
+X: FocusOut 14689254  Normal, Nonlinear virtual.
+G: FocusOut 14689254
+X: FocusOut 14689252  Normal, Nonlinear virtual.
+G: FocusOut 14689252
+X: FocusOut 14689248  Normal, Nonlinear virtual.
+G: FocusOut 14689248
+X: FocusOut 14689247  Normal, Nonlinear virtual.
+G: FocusOut 14689247
+X: FocusOut 14689179  Normal, Nonlinear virtual.
+G: FocusOut 14689179
+X: FocusOut 14689177  Normal, Nonlinear virtual.
+G: FocusOut 14689177
+X: FocusOut 14689164  Normal, Nonlinear virtual.
+G: FocusOut 14689164
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 155 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 156 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689504
+X: Enter    14689504  Normal, Nonlinear.
+----- 157 -----
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689504
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 158 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Inferior.
+X: Enter    14689247  Normal, Virtual.
+G: Enter    14689247
+X: Enter    14689248  Normal, Virtual.
+G: Enter    14689248
+X: Enter    14689267  Normal, Ancestor.
+----- 159 -----
+G: Enter    14689267
+X: Leave    14689267  Normal, Nonlinear.
+X: Enter    14689252  Normal, Nonlinear virtual.
+G: Leave    14689267
+G: Enter    14689252
+X: Enter    14689254  Normal, Nonlinear.
+----- 160 -----
+G: Enter    14689254
+X: Leave    14689254  Normal, Inferior.
+X: Enter    14689261  Normal, Ancestor.
+----- 161 -----
+G: Enter    14689261
+X: Leave    14689261  Normal, Ancestor.
+X: Enter    14689254  Normal, Inferior.
+----- 162 -----
+G: Leave    14689261
+X: Leave    14689254  Normal, Inferior.
+X: Enter    14689258  Normal, Virtual.
+G: Enter    14689258
+X: Enter    14689259  Normal, Virtual.
+G: Enter    14689259
+X: Enter    14689260  Normal, Ancestor.
+----- 163 -----
+G: Enter    14689260
+X: Leave    14689260  From Grab, Ancestor.
+X: Leave    14689259  From Grab, Virtual.
+X: Leave    14689258  From Grab, Virtual.
+X: Leave    14689254  From Grab, Virtual.
+X: Leave    14689252  From Grab, Virtual.
+X: Leave    14689248  From Grab, Virtual.
+X: Leave    14689247  From Grab, Virtual.
+X: Leave    14689179  From Grab, Virtual.
+X: Leave    14689177  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+----- 164 -----
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14689164  From Ungrab, Virtual.
+X: Enter    14689177  From Ungrab, Virtual.
+X: Enter    14689179  From Ungrab, Virtual.
+X: Enter    14689247  From Ungrab, Virtual.
+X: Enter    14689248  From Ungrab, Virtual.
+X: Enter    14689252  From Ungrab, Virtual.
+X: Enter    14689254  From Ungrab, Virtual.
+X: Enter    14689258  From Ungrab, Virtual.
+X: Enter    14689259  From Ungrab, Virtual.
+X: Enter    14689260  From Ungrab, Ancestor.
+----- 165 -----
+X: Leave    14689260  From Grab, Ancestor.
+X: Leave    14689259  From Grab, Virtual.
+X: Leave    14689258  From Grab, Virtual.
+X: Leave    14689254  From Grab, Virtual.
+X: Leave    14689252  From Grab, Virtual.
+X: Leave    14689248  From Grab, Virtual.
+X: Leave    14689247  From Grab, Virtual.
+X: Leave    14689179  From Grab, Virtual.
+X: Leave    14689177  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+----- 166 -----
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689260
+G: Leave    14689259
+G: Leave    14689258
+G: Leave    14689254
+G: Leave    14689252
+G: Leave    14689248
+G: Leave    14689247
+G: Leave    14689179
+G: Leave    14689177
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear virtual.
+G: Enter    14689179
+X: Enter    14689247  Normal, Nonlinear virtual.
+G: Enter    14689247
+X: Enter    14689248  Normal, Nonlinear virtual.
+G: Enter    14689248
+X: Enter    14689252  Normal, Nonlinear virtual.
+G: Enter    14689252
+X: Enter    14689254  Normal, Nonlinear virtual.
+G: Enter    14689254
+X: Enter    14689258  Normal, Nonlinear virtual.
+G: Enter    14689258
+X: Enter    14689259  Normal, Nonlinear virtual.
+G: Enter    14689259
+X: Enter    14689260  Normal, Nonlinear.
+----- 167 -----
+G: Enter    14689260
+X: Leave    14689260  Normal, Ancestor.
+X: Leave    14689259  Normal, Virtual.
+X: Leave    14689258  Normal, Virtual.
+X: Enter    14689254  Normal, Inferior.
+----- 168 -----
+G: Leave    14689260
+G: Leave    14689259
+G: Leave    14689258
+X: Leave    14689254  Normal, Inferior.
+X: Enter    14689261  Normal, Ancestor.
+----- 169 -----
+G: Enter    14689261
+X: Leave    14689261  Normal, Nonlinear.
+X: Leave    14689254  Normal, Nonlinear virtual.
+X: Leave    14689252  Normal, Nonlinear virtual.
+X: Enter    14689267  Normal, Nonlinear.
+----- 170 -----
+G: Leave    14689261
+G: Leave    14689254
+G: Leave    14689252
+G: Enter    14689267
+X: Leave    14689267  Normal, Ancestor.
+X: Leave    14689248  Normal, Virtual.
+X: Leave    14689247  Normal, Virtual.
+X: Enter    14689179  Normal, Inferior.
+----- 171 -----
+G: Leave    14689267
+G: Leave    14689248
+G: Leave    14689247
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Enter    14689504  Normal, Nonlinear.
+----- 172 -----
+G: Leave    14689179
+G: Leave    14689177
+G: Enter    14689504
+X: Leave    14689504  Normal, Nonlinear.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 173 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 174 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 175 -----
+G: FocusIn  46
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689504
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+G: Enter    14689179
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+X: FocusOut 14689179  Normal, Pointer.
+X: FocusOut 14689177  Normal, Pointer.
+X: FocusOut 14689164  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689177  Normal, Pointer.
+X: FocusIn  14689179  Normal, Pointer.
+----- 176 -----
+X: Leave    14689179  From Grab, Ancestor.
+X: Leave    14689177  From Grab, Virtual.
+X: Leave    14689164  From Grab, Virtual.
+----- 177 -----
+X: Leave    46  From Ungrab, Inferior.
+X: Enter    14689164  From Ungrab, Virtual.
+X: Enter    14689177  From Ungrab, Virtual.
+X: Enter    14689179  From Ungrab, Ancestor.
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 178 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 179 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 180 -----
+G: FocusIn  46
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 181 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 182 -----
+G: FocusIn  46
+X: Leave    46  From Ungrab, Inferior.
+----- 183 -----
+X: Leave    46  From Ungrab, Inferior.
+----- 184 -----
+X: Enter    14689164  Normal, Nonlinear virtual.
+G: Leave    14689179
+G: Leave    14689177
+X: Enter    14689165  Normal, Nonlinear virtual.
+G: Enter    14689165
+X: Enter    14689172  Normal, Nonlinear.
+----- 185 -----
+G: Enter    14689172
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689165  Normal, Pointer.
+X: FocusIn  14689172  Normal, Pointer.
+----- 186 -----
+X: FocusOut 14689172  Normal, Pointer.
+X: FocusOut 14689165  Normal, Pointer.
+X: FocusOut 14689164  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+G: FocusIn  46
+X: FocusIn  14689164  Normal, Pointer.
+X: FocusIn  14689165  Normal, Pointer.
+X: FocusIn  14689172  Normal, Pointer.
+----- 187 -----
+X: Leave    14689172  Normal, Nonlinear.
+X: Leave    14689165  Normal, Nonlinear virtual.
+X: Enter    14689177  Normal, Nonlinear virtual.
+G: Leave    14689172
+G: Leave    14689165
+G: Enter    14689177
+X: Enter    14689179  Normal, Nonlinear.
+----- 188 -----
+G: Enter    14689179
+X: Leave    14689179  Normal, Nonlinear.
+X: Leave    14689177  Normal, Nonlinear virtual.
+X: Leave    14689164  Normal, Nonlinear virtual.
+----- 189 -----
+X: FocusOut 46  Normal, Nonlinear virtual.
+G: FocusOut 46
+X: FocusIn  46  Normal, Pointer root.
+X: FocusIn  46  Normal, Pointer.
+----- 190 -----
+X: FocusOut 46  Normal, Pointer.
+X: FocusOut 46  Normal, Pointer root.
+X: FocusIn  46  Normal, Nonlinear virtual.
+----- 191 -----
+G: FocusIn  46

@@ -1,0 +1,67 @@
+This file is intended to give you the instructions required to get
+quickly started with Gwm without having to read the manual or the
+installation instructions.
+
+
+* Compile and install:
+
+Unpack the source and go into the directory "Gwm-2.0". 
+
+Then you have to run configure:
+  ./configure
+or if you want to install in some non-standard place (in your own home
+directory for exmple, if you have no root privilegues):
+  ./configure --prefix=WHERE_TO_INSTALL
+
+Then compile the code:
+  make 
+
+And finally install it:
+  make install
+(Unless you install in your own home directory, you need to be root to
+install Gwm.)
+  
+
+* Start Gwm
+
+The recommended way to start Gwm is from your ".xinitrc" or ".xsession"
+file. At the end of that file, add either:
+  gwm;
+or
+  xterm -e gwm;
+In the latter case you will get a window with a "gwm>" prompt where
+you can give scheme commands directly to Gwm. This is very useful if
+you want to modify things while running Gwm, or test new things, or
+understand why something goes wrong in Gwm.
+
+Log out and in again to make the change to ".xinitrc" or ".xsession"
+above take effekt. Hopefully Gwm will then start. 
+
+
+* Configure your profile
+
+The first time you start gwm, you will get a startup dialogue where
+you can specify what type of windows, what menus, what focus mode,
+etc, to use. Do this and then press OK. 
+
+Further configuration can be done via Root menu -> Customize, or in
+"gwmrc.scm" or in "menurc.scm".
+
+If you want to try another configuration from the startup dialogue,
+remove "gwmrc.scm" and "menurc.scm" and restart Gwm (Root menu ->
+Restart).
+
+
+* End Gwm
+
+To end Gwm, you can either use the root menu:
+  Root menu -> Quit
+or give a command in the "gwm" terminal window:
+  (end)
+
+If gwm was the last command in ".xinitrc" or ".xsession", you will
+then be logged out.
+
+
+We thank you for selecting Gwm-2.0, and wish you a pleasant time in
+front of your computer!

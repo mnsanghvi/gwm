@@ -1,0 +1,84 @@
+
+make-deco
+  Bar::Bar
+    Decoration::Decoration
+
+
+realize-menu
+  IMenu::IMenu
+    menu->prepareopen(this, 0, scr, 1);
+    menu->setnaturalsize();
+    menu->updatesize(-1, -1);
+    menu->updatepos(0, 0);
+    menu->open(MenuStatus) 
+    menu->execopen();
+
+
+DecorateWindow
+  cw->Open(scr)
+    deco->prepareopen(NULL, this, scr, 1);
+    deco->setnaturalsize();
+    deco->updatesize(-1, -1);
+    CalcGravityOffset(xoff, yoff);	/* sets reparenting offsets */
+    deco->updatepos(xpos-xoff, ypos-yoff);
+    deco->open(WindowStatus)
+    InitialMap();
+      deco->execopen();
+
+  Före:
+IMenu()
+  menu->prepareopen(0, scr);
+  menu->updatepos(0, 0);
+  create window
+  create fsm
+  menu->open
+  swoppa self
+  menu->execopen
+open()
+  flyttar in window och fsm under förälder
+  menu->modstatus
+  valid = 1
+  protect_object(self)
+close()
+  flyttar ut window och fsm från förälder
+  menu->modstatus
+  valid = -1
+  unprotect self
+~IMenu()
+  delete window
+  delete fsm
+  swoppa self
+  menu->execclose
+  menu->close
+
+  Efter:
+IMenu()
+  create window
+  create fsm
+  swoppa self
+open()
+  flyttar in window och fsm under förälder
+  menu->open
+  menu->execopen
+  valid = 1
+  protect_object(self)
+close()
+  flyttar ut window och fsm från förälder
+  menu->execclose
+  menu->close(1)
+  valid = -1
+  unprotect self
+~IMenu()
+  delete window
+  delete fsm
+  menu->close(0)
+  swoppa self
+
+menu->self
+self
+obj
+
+
+Om ny del har förälder (och inte är IMenu) -> klaga
+Om ny del är öppen -> klaga
+Om ny del är IMenu -> unrealize

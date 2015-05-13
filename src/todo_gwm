@@ -1,0 +1,65 @@
+Buggar
++ Vissa client-dialoger går bara att öppna en gång
++ fvwm-fönster med för bred titel
++ guile obsolete
+* Helskärms-clienter
+* Konstig minnesbug ger fönster fel storlek?
+
+Features
++ Imlib2
++ ignored-modifiers
+  * fladdrande fokus
+* Gww
+
+Scheme
+* zoom
++ enlightenment-menyer
+* resize fönster med konstant titel-storlek
+* panlister på toppen
+* följ protokoll
+
+Övrigt
+* Versionsnummer och configure
+
+---------------
+Kladd
+
+(define beh
+  (let ((osize #f)
+        (isize #f))
+  (make-behavior
+    (on (user-event 'update-size)
+        (set! osize (deco-width deco))
+        (set! isize (deco-width (deco-part deco 1)))
+        (if (< osize isize)
+            (modify-deco (deco-part deco 1) :anchor '((0 0 0) (0.5 0 0.5)))
+            (modify-deco (deco-part deco 1) :anchor '((0.5 0 0.5) (0.5 0 0.5)))))
+    (on (resize-event)
+        (send-user-event 'update-size deco)))))
+
+(define beh
+  (let ((ang 0.0))
+  (make-behavior
+    (on (user-event 'update-pos)
+        (let ((f (+ (* (sin ang) 0.5) 0.5)))
+          (modify-deco (deco-part deco 1) :anchor (list (list f 0 f) '(0.5 0 0.5)))
+          (set! ang (+ ang 0.1))
+          (send-timer-event 'update-pos deco 0.1))))))
+
+(on (property-change '_NET_WM_STRUT)
+     #f))
+     (let ((str (get-x-property deco '_NET_WM_STRUT_PARTIAL #t)))
+       (display "HELLO!\n")
+       (display (window-name deco))
+       (newline)
+       (display str)
+       (newline))))
+
+(define (modify-window-behavior beh)
+  (let ((func (lambda (s)
+                (if (deco-behavior s)
+                    (modify-behavior (deco-behavior s) beh)
+                    (set-deco-behavior! s beh)))))
+    (map func (list-of-windows 'window))))
+        
+

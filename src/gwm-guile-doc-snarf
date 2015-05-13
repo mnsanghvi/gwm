@@ -1,0 +1,33 @@
+#!/bin/sh
+# Extract the initialization actions for builtin things.
+
+fullfilename=$1; shift
+
+# strip path to source directory
+filename=`basename $fullfilename`
+
+# we need to be sure that the .x file exists
+# since the .c/.cc file may include it
+# (the old guile-snarf did not have this problem
+#  because the makefile redirects output to the .x file
+#  which creates the file before the inclusion occurs)
+# --12/12/99 gjb
+no_ext=`echo $filename | sed 's/\.[^.]*$//g'`
+dot_doc=${no_ext}.doc
+
+temp="/tmp/snarf.$$"
+trap "rm -f $temp" 0 1 2 15
+
+## Let the user override the preprocessor & awk autoconf found.
+test -n "${CPP+set}" || CPP="gcc -E"
+test -n "${AWK+set}" || AWK="awk"
+
+## Must run guile-func-name-check on the unpreprocessed source
+# No, we must not do it at all. /aho
+#${AWK} -f guile-func-name-check "$fullfilename"
+
+## We must use a temporary file here, instead of a pipe, because we
+## need to know if CPP exits with a non-zero status.
+${CPP} -DSCM_MAGIC_SNARFER -DSM_MAGIC_SNARF_INITS "$@" > ${temp} || exit $?
+cat ${temp} | sed 's/^\(.\{128\}.\{128\}.\{128\}.\{128\}.\{128\}.\{128\}.\{128\}.\{128\}\).*/\1/g' | \
+${AWK} -f guile-snarf.awk `basename ${dot_doc}`

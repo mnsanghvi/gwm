@@ -1,0 +1,32 @@
+* GWM-2.1
+  - Slå ihop Gwm och Gwmw
+  - Active plugs
+      resize från ritfunktionen?
+  - Rita om pixmappar (och activa pluggar) automatiskt
+      + fixa refresh-deco
+      $$$ varför frias inte menyer?
+  - Focus precis som enter
+  - Mer från Imlib
+  - Ta bort realize/unrealize-menu, reformera deco
+      + :max-width, :min-width
+      #t och #f
+      resize på menyer
+      behövs två X-fönster för menyer?
+      + direction center
+      $$$ DelayReconfigure, funkar den?
+  + Ta bort opening/closing
+  + :icon-decoration
+  - transparans 'glass
+  - cursor symboliska namn
+  - [Behaviors]
+  - [Threads]
+
+* butler-demon
+  - Fler plottar, och även axlar i C
+  - Fixa matten?
+  - Allt som i tdvis
+
+* cutpict
+  - Vitbalans
+  - Utskriftsformat
+  - Anpassa till behov

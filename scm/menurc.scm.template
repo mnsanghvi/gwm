@@ -1,0 +1,107 @@
+;; menurc.scm
+;; This file contains specification of your popup menus
+;; Copy it to your home directory and modify it.
+
+(primitive-load-path "popups")
+
+;; Add names on computers for the login menu to this list
+(defvar machine-list
+        '()
+        "List of machines that can be logged in to." 'list)
+
+(defvar command-pop-list
+        `(("Xterm" ,(lambda (h) (list "xterm" "-n" (machine-name h))))
+          ("Emacs" ,(lambda (h) (list "emacs" "-name"
+                                        (string-append (machine-name h) "-Emacs")
+                                        "-geometry" "85x50")))
+          "xcalc"
+          "mozilla"
+          ("Root" "xterm" "-e" "su" "-"))
+        "List of shell commands to have in the menu." 'list)
+
+(defvar root-pop-list
+        `(("Customize" ,(lambda (x) (custom-menu)))
+          ("Refresh" ,(lambda (x) (refresh x)))
+          ("Blank" ,(lambda (x) (start-screensaver)))
+          ("Exec cut" ,(lambda (x)
+                           (display (eval-string (cut-buffer)))
+                           (newline)))
+          ("Redecorate all" ,(lambda (x) (redecorate-all)))
+          ("Deiconify all" ,(lambda (x) (deiconify-all)))
+          ("Unfocus" ,(lambda (x) (focus-window #f)))
+          #t
+          ("Restart" ,(lambda (x) (restart)))
+          ("Quit" ,(lambda (x) (end))))
+        "Items for the root menu." 'list)
+
+(defvar window-pop-list
+        `(("Raise" ,raise-window)
+          ("Lower" ,lower-window)
+          ("Move" ,(lambda (w) (user-move-window w #f)))
+          ("Resize" ,(lambda (w) (user-resize-window w #f)))
+          ("Iconify" ,toggle-iconify-window)
+          ("Zoom" ,(lambda (w) (zoom-window w)))
+          ("Nail" ,(lambda (w) (virtual-toggle-nail w)))
+          ("Focus" ,focus-window)
+          ("Refresh" ,refresh)
+          ("Redecorate" ,redecorate-window)
+          ("Kill" ,(lambda (w) (or (delete-window w)
+                                     (kill-window w)))))
+        "Items for the window menu." 'list)
+
+(make-screen-var window-pop #f)
+(make-screen-var root-pop #f)
+(make-screen-var command-pop #f)
+(make-screen-var login-pop #f)
+(make-screen-var machine-command-pop #f)
+
+(define (update-menus)
+  (window-pop (make-popup "Window Options" window-pop-list))
+  (root-pop (make-popup "Root Options" root-pop-list))
+  (command-pop (make-command-popup "Commands" command-pop-list))
+  (login-pop (make-machine-popup "Login" 
+                                 (lambda (h) (list "xterm" "-n" (machine-name h)))
+                                 machine-list))
+  (machine-command-pop (make-machine-command-popup "Machine" machine-list
+                                                   "Command" command-pop-list))
+)
+
+;; Delay creation of menus until screen opening (of the first screen)
+(add-hook! screen-opening
+           (lambda (s) (if (eq? s (car (list-of-screens))) (update-menus))))
+
+(custom-menu-install-hook "Menurc" update-menus)
+
+
+;; Use the menus (and bind window and icon behaviors) 
+(set! window-behavior 
+  (make-behavior
+   (on-event (button 1 any)
+             raise-lower-move-window
+             :steal (check-modifiers modifiers))
+   (on-event (button 3 any)
+             (lambda (deco event) (menu-pop (window-pop) deco event))
+             :steal (check-modifiers modifiers))
+   ))
+
+(set! icon-behavior 
+  (make-behavior
+   (on-event (button 1 any)
+             iconify-move-window)
+   (on-event (button 3 any)
+             (lambda (deco event) (menu-pop (window-pop) deco event)))
+   ))
+
+(set! screen-behavior 
+  (make-behavior 
+   (on (button 1 shift-mask)
+       (menu-pop (login-pop) deco event))
+   (on (button 1 any)
+       (menu-pop (command-pop) deco event))
+   (on (button 2 any)
+       (menu-pop (machine-command-pop) deco event))
+   (on (button 3 shift-mask)
+       (menu-pop (make-windows-popup "Windows") deco event))
+   (on (button 3 any)
+       (menu-pop (root-pop) deco event))))
+

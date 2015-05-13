@@ -1,0 +1,964 @@
+This is a list of all Gwm-specific scheme-primitives (in no specific
+order). 
+
+DECORATIONS:
+
+(deco? obj)
+  Return true if obj is decoration.
+
+(make-deco [part1] [part2] ... [key val] ...)
+  Make a decoration object, consisting of the parts (decorations,
+  pixmaps, labels, or empty lists).
+
+(inspect-deco deco [key] ...)
+  Get the values of the keys as a keyword list.
+
+(modify-deco deco [key val] ...)
+  Change the values of the keys.
+
+  Possible keywords for decorations are:
+  :direction       'horizontal or 'vertical, defaults to switch parents dir
+  :width           fixed width
+  :height          fixed height
+  :min-width       minimum breadth of deco
+  :max-width       maximum breadth of deco
+  :separator       space between parts
+  :margin          space before first and after last part
+  :borderwidth
+  :bordercolor
+  :background
+  :behavior
+  :cursor
+  :anchor          specifies fixed point for floating parts
+  :property        association list of properties
+  :opening         thunk to run when decoration opens
+  :closing         thunk to run when decoration is closed
+
+(deco-valid? deco)
+  Return true if decoration is opened and still valid.
+
+(window-valid? window)
+  Return true if window is an opened and valid window.
+
+(deco-width deco)
+(deco-height deco)
+(deco-x deco)
+(deco-y deco)
+  Dimensions and position of decoration.
+
+(deco-borderwidth deco)
+(set-deco-borderwidth! deco num)
+  Get and set decoration borderwidth.
+
+(deco-bordercolor deco)
+(set-deco-bordercolor! deco paint)
+  Get and set decoration border color.
+
+(deco-background deco)
+(set-deco-background! deco paint)
+  Get and set decoration background color.
+
+(deco-behavior deco)
+(set-deco-behavior! deco behavior)
+  Get and set decoration behavior.
+
+(deco-cursor deco)
+(set-deco-cursor! deco cursor)
+  Get and set decoration cursor.
+
+(deco-anchor deco)
+(set-deco-anchor! deco anchor)
+  Get and set decoration anchor. If a decoration has an anchor, it is
+  considered to be free-floating, i.e. it can be placed anywhere in
+  the parent decoration instead of being stacked next to the
+  other sub-decorations in it. The anchor can be a list of zero, two
+  or four elements. Zero elements means no anchor, two fixes the
+  position, and four fixes the position and size of the decoration in
+  its parent. Each element is either a positive integer (offset of
+  left/upper edge from left/upper side of parent), negative integer
+  (offset minus one of right/lower edge from right/lower side of
+  parent), or a list of three numbers, the first a real number
+  (typically but not necessarily between 0 and 1) as a proportion in
+  the decoration, the second an integer offset and the third a real
+  number as the proportion of the parent decoration. For example,
+  (0.5 0 0.5) means that the centers of the decorations should be
+  aligned, (0 5 0) means the same as 5, and (1 -3 1) means the same
+  as -4.
+
+(deco-properties deco)
+(set-deco-properties! deco assoc-list)
+  Get and set decoration properties. The properties is an association
+  list between symbols and values (as dotted pairs).
+
+(get-property deco symbol)
+(set-property! deco symbol value)
+  Get and set specific decoration properties. 
+
+(deco-parts deco)
+  Get a list of all the sub-decorations of the decoration.
+
+(deco-num-parts deco)
+  Number of subdecorations in the decoration.
+
+(deco-part deco num)
+  Get sub-decoration number num.
+
+(set-deco-part! deco num new-deco)
+  Replace sub-decoration num with new-deco.
+
+(deco-add-part! deco num new-deco)
+  Add new-deco at position num in decoration.
+
+(deco-remove-part! deco num)
+  Remove subdecoration num.
+
+(deco-reorder-part! deco num1 num2)
+  Reorder the subdecorations by moving the one at position num1 to num2. 
+
+(refresh-deco deco)
+  Refresh the given deco. More efficient than the function refresh if
+  a specific decoration (and not a client window) is to be redrawn.
+
+(deco-parent deco)
+  Get parent of decoration.
+
+(deco-window? deco)
+  Return true if decoration is part of a client window decoration.
+
+(deco-icon? deco)
+  Return true if decoration is part of an icon decoration.
+
+(deco-menu? deco)
+  Return true if decoration is part of a menu (or inner part of a placed menu).
+
+(deco-screen? deco)
+  Return true if decoration is a screen decoration.
+
+(hide-deco deco)
+  Make decoration invisible. This is the only way of unmapping a
+  window.
+
+(show-deco deco)
+  Make decoration visible. If deco is a top-most decoration, this
+  maps the window iff the windows iconification state allows it.
+
+(force-show-window deco)
+  If deco is a top-most decoration, forces it to show even if the
+  iconification state says otherwise.
+
+(unforce-show-window deco)
+  Undoes the effect of force-show-window, i.e. whether it is mapped
+  will follow from the windows iconification state.
+
+(deco-hidden? deco)
+  Return true if decoration is hidden.
+
+(deco-shaped? deco)
+  Return true if decoration has nonrectangular shape.
+
+(deco-mapped? deco)
+  Return true if decoration is visible, i.e. it and all parents should be mapped.
+
+(window-mapped? window)
+  Return true if window is mapped.
+
+(xid->deco xid)
+  Find decoration from its X id.
+
+(client-xid->window xid)
+  Find a window from the X id of its client.
+
+(window->client-xid window)
+  Get the X id corresponding to the client window.
+
+MENUS:
+
+(realize-menu deco screen)
+  Make deco valid as menu, so that e.g. dimensions can be found out.
+
+(unrealize-menu deco)
+  Make deco invalid as menu, e.g. so that it parts can be used elsewhere.
+
+(place-menu deco screen [x y] [key val] ...)
+  Place deco (previously realized or not) as a fixed menu on screen at
+  coordinates (x, y). Possible keys are:
+  :name            Menu windows name
+  :icon-name       Menu windows icon name
+  :class-name      Menu windows client class name
+  :client-name     Menu windows client name
+  :gravity         Gravity of menu window
+  :decoration      Special decoration function instead of 'describe-window'
+
+(pop-menu deco screen [x y] [key val] ...)
+  Open deco as a popup menu on screen at coordinates (x,y) and let it
+  grab the server. Possible keys are:
+  :grab-keyboard   keyboard events are also grabbed
+  :confine-pointer confine pointer within deco
+  :menu-parent     decoration which popped this menu and keeps the grab
+  :cursor
+  
+(unpop-menu deco)
+  Unpop the menu and ungrab the server.
+
+SCREEN:
+
+(screen)
+(root-window)
+  Get the current root window.
+
+(set-screen! screen/window)
+(set-root-window! screen/window)
+  Set the current root window to screen or to the screen of window.
+
+(root-deco deco)
+  Get screen of decoration.
+
+(screen-index [screen])
+  Get index of the screen.
+
+(index->screen index)
+  Get the screen from its index.
+
+(screen-width [screen])
+(screen_height [screen])
+  Dimensions of the screen.
+
+(screen-depth [screen])
+  Depth of the screen.
+
+(screen-widthMM [screen])
+(screen-heightMM [screen])
+  Dimensions in millimeters of the screen.
+
+(screen-type [screen])
+  Type of screen, i.e. color, mono, or grayscale.
+
+(screen-count)
+  Number of managed screens.
+
+(display-name)
+  Name of the default screen.
+
+CURSORS:
+
+(cursor? obj)
+  Return true if obj is a cursor.
+
+(make-cursor number [key val] ...)
+(make-cursor filename [filename2] [key val] ...)
+  Make a cursor, either from a number or from one or two bitmap
+  files. Keys can be:
+  :foreground      foreground color of cursor
+  :background      background color of cursor
+
+FONTS:
+
+(font? obj)
+  Return true if obj is a font.
+
+(make-font name)
+  Load font having name.
+
+(font-name font)
+  Return name of the font.
+
+(font-dimensions font)
+  Return the width, height, slant and ascent of the font.
+
+(string-dimension string font [key val] ...)
+  Return the width, height, left bearing and ascent of the string in
+  the font. Keywords are:
+  :angle           Angle of text, clockwise in degrees
+  :mirrored        Mirror-reversed text
+
+(find-fonts string)
+  Return a list of possible expansions for the font name.
+
+COLORS:
+
+(color? obj)
+  Return true if obj is a color.
+
+(make-color name)
+(make-color r g b)
+  Make a color from name, possibly 'transparent or 'hole, or from the
+  rgb-components of the color. 
+
+(free-color col1 [col2] ...)
+  Free the colors from the colormap. May make things look strange if
+  used carelessly...
+
+(color-components color)
+  Get the rgb-components of color.
+
+PIXMAPS:
+
+(pixmap? obj)
+  Return true if obj is a pixmap.
+
+(make-pixmap width height [key val] ...)
+(make-pixmap filename [key val] ...)
+(make-pixmap background [filename1 color1] ...)
+  Construct a pixmap either with dimensions width * height, or from
+  bitmap in filename, or by combining several bitmap files with
+  different colors. The first two forms has the keys:
+  :background
+  :foreground
+
+(make-label string [key val] ...)
+  Make a pixmap with a text label. Keys are:
+  :font
+  :background
+  :foreground
+  :horizontal-margin
+  :vertical-margin
+  :angle            Angle of text, clockwise in degrees
+  :mirrored         Mirror-reversed text
+
+(load-pixmap filename [symbol color] ... [key val] ...)
+  Loads a pixmap from file, possibly substituting colors according to
+  the (symbol - color) specifications. Possible keys are:
+  :xpm-closeness
+  :foreground       (only used if reading of the file goes wrong)
+  :background       (  - ' ' - )
+  :shape            'hole or 'transparent, how to treat transparent areas
+
+(load-image filename [key val] ...)
+  Loads a pixmap from an image file, in a format handled by
+  Imlib. Only supported if Gwm is compiled with Imlib.
+  :foreground       (only used if reading of the file goes wrong)
+  :background       (  - ' ' - )
+  :shape            'hole or 'transparent, how to treat transparent areas
+
+(draw-point pixmap x y [key val])
+  Draw point (x, y) in pixmap. The only possible key is:
+  :color
+
+(draw-line pixmap x1 y1 x2 y2 [key val])
+  Draw a line from (x1, y1) to (x2, y2) in pixmap. The only possible key is:
+  :color
+
+(draw-polygon pixmap x1 y1 ... [key val])
+  Fill the polygon inside the given set of points. The only possible
+  key is:
+  :color
+
+(draw-rectangle pixmap x y width height [key val] ...)
+  Draw a rectangle in pixmap, with interor starting at (x, y) and
+  having dimensions width * height. Keys are:
+  :background       color of interior
+  :foreground       color of frame
+  :borderwidth      size of frame
+
+(draw-ellipse pixmap x y width height [key val] ...)
+  Draw an ellipse in pixmap, with interor inscribed in the rectangle
+  starting at (x, y) and having dimensions width * height. Keys are:
+  :background       color of interior
+  :foreground       color of frame
+  :borderwidth      size of frame
+
+(draw-circle-sector pixmap x y radius [angle1 angle2] [key val] ...)
+  Draw a circle sector in pixmap, with center at (x, y) and the given
+  radius of the interior, and between the angles in degrees, clockwise
+  from the top. Keys are:
+  :background       color of interior
+  :foreground       color of frame
+  :borderwidth      size of frame
+
+(draw-text pixmap x y string [key val] ...)
+  Draw text in pixmap, starting at (x, y). Keys are:
+  :font
+  :color
+
+ACTIVE LABELS:
+
+(label? obj)
+  Return true if obj is an active label.
+
+(make-active-label string [key val] ...)
+  Make an active label for string. Possible keys are:
+  :font
+  :foreground
+  :horizontal-margin
+  :vertical-margin
+
+FEEDBACK:
+
+(draw-rubber-point deco x y [key val])
+  Draw rubber point at (x, y) on decoration. Rubber drawings are only
+  shown during 'with-user-feedback' and 'with-timer-feedback', are
+  drawn with xor, and erased automatically. The only possible key is:
+  :invert-color
+
+(draw-rubber-line deco x1 y1 x2 y2 [key val])
+  Draw a rubber line from (x1, y1) to (x2, y2) on decoration. The only
+  possible key is:
+  :invert-color
+
+(draw-rubber-polygon deco x1 y1 ... [key val])
+  Fill a rubber polygon inside the given set of points. The only
+  possible key is:
+  :invert-color
+
+(draw-rubber-rectangle deco x y width height [key val] ...)
+  Draw a rubber rectangle on decoration, with interor starting at 
+  (x, y) and having dimensions width * height. Keys are:
+  :borderwidth      size of frame
+  :invert-color
+
+(draw-rubber-ellipse deco x y width height [key val] ...)
+  Draw a rubber ellipse on decoration, with interor inscribed in the
+  rectangle starting at (x, y) and having dimensions width * height.
+  Keys are: 
+  :borderwidth      size of frame
+  :invert-color
+
+(draw-rubber-circle-sector deco x y radius [angle1 angle2] [key val] ...)
+  Draw a rubber circle sector on decoration, with center at (x, y) and
+  the given radius of the interior, and between the angles in degrees,
+  clockwise from the top. Keys are:
+  :borderwidth      size of frame
+  :invert-color
+
+(draw-rubber-text deco x y string [key val] ...)
+  Draw rubber text on decoration, starting at (x, y). Keys are:
+  :font
+  :invert-color
+
+(with-grabbed-server deco thunk [key val] ...)
+  Run thunk with the X server grabbed, and events redirected to deco.
+  Keys are:
+  :grab-keyboard
+  :confine-pointer
+  :grab-children
+  :cursor
+
+(with-user-feedback thunk event [key val] ...)
+(with-user-feedback thunk stop-thunk [key val] ...)
+  For each motion, press or release event, run thunk with that event
+  as argument. If an event is given as argument to 'with-user-feedback,
+  the first call to thunk is with that event, and the loop stops when
+  a matching release (or another press) occurs. If a stop-thunk is
+  given instead, the loop continues until the stop-thunk returns true
+  for a received event. In the first case the return value is the last
+  event, in the second case the return value is the result of
+  stop-thunk. The server will be grabbed during the loop, unless the
+  key :no-freeze is set to true. Rubber drawings made by the thunks
+  are shown until the next event.
+  :no-freeze
+  :cursor
+
+(with-timer-feedback thunk delay times [key val] ...)
+(with-timer-feedback thunk delay-thunk [key val] ...)
+  Run thunk a number of times with delays between. If delay and times
+  are given, run it that many times with that delay. If delay-thunk is
+  given, the delay is given by the return of this thunk, and the loop
+  stops when the thunk return false (or something that is not a
+  number). The server will be grabbed during the loop, unless the
+  key :no-freeze is set to true. Rubber drawings made by the thunks
+  are shown until the next call to them.
+  :no-freeze
+  :cursor
+
+EVENTS:
+
+(xevent? obj)
+  Return true if obj is an X-event.
+
+(event? obj)
+  Return true if obj is an event descriptor.
+
+(user-event tag)
+  Make a user event descriptor.
+
+(property-change prop)
+  Make a property-change event descriptor.
+
+(client-message message)
+  Make a client-message event descriptor.
+
+(button button modifiers)
+  Make a button event descriptor.
+       
+(double-button button modifiers)
+  Make a double-click event descriptor.
+       
+(triple-button button modifiers)
+  Make a triple-click event descriptor.
+       
+(multi-button button modifiers multiplicity)
+  Make a multiple click event descriptor.
+       
+(buttonpress button modifiers)
+  Make a button-press event descriptor.
+       
+(buttonrelease button modifiers)
+  Make a button release event descriptor.
+       
+(key keycode/keysym [modifiers])
+  Make a key event descriptor.
+       
+(keypress keycode/keysym [modifiers])
+  Make a key press event descriptor.
+       
+(keyrelease keycode/keysym [modifiers])
+  Make a key release event descriptor.
+       
+double-click-delay
+  The maximum number of milliseconds between two mouse presses to
+  consider it a doubleclick/multiclick.
+
+any
+  Alias for -1, meaning any key, button, or mask in event descriptors.
+
+alone
+  Alias for 0, meaning no modifiers in event descriptors.
+
+button-1-mask
+button-2-mask
+button-3-mask
+button-4-mask
+button-5-mask
+shift-mask
+lock-mask
+control-mask
+alt-mask
+modifier-1-mask
+modifier-2-mask
+modifier-3-mask
+modifier-4-mask
+modifier-5-mask
+  Masks to use as modifiers in event descriptors.
+
+name-change
+  Name change event descriptor.
+
+icon-pixmap-change
+  Icon pixmap change event descriptor.
+
+movement
+  Pointer motion event descriptor.
+
+enter
+leave
+  Enter and leave event descriptors. 
+
+focus-in
+focus-out
+  Focus event descriptors.
+
+map-event
+unmap-event
+move-event
+resize-event
+stack-event
+  Event descriptors for mapping and configuration events.
+
+(event-window-coords xevent window)
+  Find logical coordinates in window of event.
+
+(send-user-event tag window [:propagate val])
+  Send user event with tag to window. Dont propagate to parts if
+  key :propagate is given and false.
+
+(send-timer-event tag window delay [:propagate val])
+  Send a delayed user event with tag to window. Propagate
+  to parts if key :propagate is given and non-false.
+
+(send-key-to-window window keycode/keysym [modifiers])
+  Send key event to window.
+
+(send-string-to-window window string [modifiers])
+  Send key events to window, transfering the characters of the string.
+
+(send-button-to-window window button modifiers x y)
+  Send button event at position (x, y) to window.
+
+(send-client-message window name value1 ...)
+  Send a client message event to window.
+
+(event-deco xevent)
+  Return the deco that got this event.
+
+(event-data xevent)
+  Get data from user event or client message event.
+
+(event-modifier xevent)
+  Get modifiers from key or button event.
+
+(event-code xevent)
+  Get key or button code from event.
+
+(event-x xevent)
+(event-y xevent)
+  Get position of event.
+
+(event-relative-x xevent)
+(event-relative-y xevent)
+  Get position of event relative to the deco of the event.
+
+(event-time xevent)
+  Get event time.
+
+(event-key xevent)
+  Get key from event.
+
+(event-type xevent)
+  Get type of event as a symbol.
+
+(wait-for-release event)
+  At a press event, wait for the corresponding release before continuing.
+
+BEHAVIORS:
+
+(eventarc? obj)
+  Return true if obj is a behavior event arc.
+
+(on-event event-descriptor thunk [key val] ...)
+(on-event key-or-button-event-descriptor thunk1 [thunk2] [key val] ...)
+  Make an event arc for a behavior. When an event matching
+  event-descriptor occurs, the thunk is run. The second form is for
+  keys, buttons and multibuttons,which may take one thunk to run at
+  press and one to run at release. Keywords are:
+  :behavior        New "state" for the state machine.
+  :steal           Steal corresponding events from parts.
+  :resend          Steal events from parts and resend them when done.
+  The last two keywords can only be given for events that are meaningful
+  to steal from inner decorations or clients, i.e. buttons or keys and
+  their presses and releases.
+
+(on event-descriptor body ... [key val] ...)
+  Macro for on-event. Makes a thunk out of body with "deco" and
+  "event" as arguments.
+
+(eventarc-event event)
+  Retreive the event-descriptor for the eventarc.
+
+(eventarc-action event) 
+  Retreive the action thunk of the eventarc, or a pair of thunks 
+  in the case of buttons or keys.
+
+(eventarc-behavior event)
+  Retrieve the new behavior state of the eventarc.
+
+(eventarc-steal-resend event)
+  Retrieve the values of :steal and :resend in a pair, or false
+  if they are not given or the eventarc is of the wrong type.
+
+(behavior? obj)
+  Return true if obj is a behavior.
+
+(make-behavior event-arc/behavior ...)
+  Make a new behavior out of the supplied arcs and behaviors.
+
+(modify-behavior behavior event-arc/behavior ...)
+  Change the arcs in the behavior according to the supplied arcs and
+  behaviors. 
+
+(inspect-behavior behavior)
+(inspect-behavior behavior event-descriptor)
+  Without argument, gives a list of all its eventarcs. With argument,
+  returns the corresponding eventarc if any.
+
+WINDOW FUNCTIONS:
+
+(window-deco deco)
+  Get the window decoration of the client corresponding to deco.
+
+(icon-deco deco)
+  Get the icon decoration of the client corresponding to deco.
+
+(icon-decorated? deco)
+  Return true if the icon decoration for the client is already realized.
+
+(top-deco deco)
+  Get the top-most parent of the decoration.
+
+(inner-deco deco)
+  Get the inner client decoration corresponding to deco.
+
+(window-iconified? window)
+  Return true if window is iconified.
+
+(iconify-window window)
+(deiconify-window window)
+  Iconify or deiconify the window. Whether the icon or the window is
+  actually mapped depends on if they are hidden or not.
+
+(window-group window)
+  The window group of the window.
+
+(set-window-group! window group)
+  Set the window group of window to group (list of windows or group
+  leader, empty list removes window from its group).
+
+(window-gravity window)
+(set-window-gravity! window)
+  Get and set window gravity.
+
+(move-window window x y)
+  Move window to (x,y).
+
+(resize-window window width height)
+  Resize window to width * height.
+
+(move-resize-window window x y width height)
+  Move and resize window in one operation (bypasses gravity).
+
+(raise-window window [rel-window])
+  Raise window to top, or just above rel-window.
+
+(lower-window window [rel-window])
+  Lower window to bottom, or just below rel-window.
+
+(delete-window window)
+  Ask the client window to delete itself.
+
+(kill-window window)
+  Forcibly destroy the window.
+
+(redecorate-window window)
+  Reconstruct the decorations for the window and icon of the
+  client. Key:
+  :decoration     Alternative decoration function to 'describe-window'
+
+(window-name window)
+  Name of client window.
+
+(set-window-name! window name)
+  Change name of client window.
+
+(window-client-name window)
+  Get the client name.
+
+(window-client-class window)
+  Get the client-class.
+
+(window-machine-name window)
+  Get name of host on which the client runs.
+
+(window-icon-name window)
+  Get name of icon.
+
+(set-window-icon-name! window name)
+  Change name of icon.
+
+(window-client-x window)
+(window-client-y window)
+(window-client-width window)
+(window-client-height window)
+(window-client-borderwidth window)
+  Position and dimensions of the client window. Can also be retrieved
+  via the appropriate "deco" functions on (inner-deco window).
+
+(window-client-shaped? window)
+  Return true if the client has a shaped window.
+
+(window-x window)
+(window-y window)
+(window-width window)
+(window-height window)
+  Position and dimensions of the entire window. Can also be retrieved
+  via the appropriate "deco" functions on (top-deco window).
+
+(window-icon-window window)
+  Get the specific window to use for the icon, if any.
+
+(window-icon-pixmap window)
+  Get the pixmap to use for the icon, if the client has specified any.
+  Uses the keys:
+  :background
+  :foreground
+
+(window-icon-pixmap-id window)
+  Get the X id for the client specified icon bitmap. May be used to
+  keep track of changes. 
+
+(window-user-set-position? window)
+(window-user-set-size? window)
+(window-program-set-position? window)
+(window-program-set-size? window)
+  Check if the position and size was prescribed by the user or the
+  client. 
+
+(window-transient-for window)
+  Check if window is a transient window, and for which window.
+
+(set-icon-sizes! min-width min-height max-width max-height width-inc height-inc)
+  Set icon size preferences.
+
+(get-wm-command window)
+  Get the restart command from a client window.
+
+(set-focus! deco/#t)
+  Set focus to deco, or to pointer-root if argument is #t. To set
+  focus to a client window, set it to inner-deco of the window.
+
+(get-focus)
+  Return the deco which has the focus, or #t if pointer-root, or
+  false if no or an unknown window has focus.
+
+(window-focusable? window)
+  Return true if the client window can take focus.
+
+(set-colormap-focus! window/screen)
+  Set the used colormap to that of the window or screen.
+
+(set-subwindow-colormap-focus! window [index])
+  Change the colormap focus between subwindows of window.
+
+(conform-window-size window width height)
+  Return a list of an acceptable width and height according to the
+  windows size hints, as close as possible (but not larger than) the
+  given width and height.
+
+(window-size window)
+  Return a list of width and height of window in logical units.
+
+(set-window-size! window list)
+  Resize window to the width and height in list given in logical units. 
+
+GENERAL:
+
+(process-events)
+  Recursively process events as long as there are any in the queue.
+
+(process-exposes)
+  Process expose events.
+
+(hostname)
+  Get hostname.
+
+(refresh window/sreen)
+  Refresh the the given window or the entire screen.
+
+(refresh-deco deco)
+  Refresh the the given deco. 
+
+(set-screen-saver timeout interval prefer-blanking allow-exposures)
+  Set screen saver parameters.
+
+(set-pointer-acceleration numerator denominator)
+  Set pointer acceleration parameters.
+
+(set-pointer-threshold num)
+  Set number of pixels to move before pointer acceleration is used.
+
+(bell [volume])
+  Ring keyboard bell.
+
+(set-key-mapping keycode sym1 [sym2] ...)
+  Change keyboard mapping for keycode.
+
+(keysym->keycode keysym)
+  Convert keysym name to a keycode and modifier pair.
+
+(keycode->keysym keycode modifier)
+  Convert a keycode and modifier to a keysym name.
+
+(cut-buffer)
+  Get contents of X cut buffer number 0.
+
+(set-cut-buffer! string)
+  Set contents of X cut buffer number 0.
+
+(rotate-cut-buffers [step])
+  Rotate the cut buffers step steps.
+
+(resource-put name class)
+(resource-get name class)
+(make-string-usable-for-resource-key string)
+  Internal resource database handling. Perhaps obsolete ?
+
+(get-x-property window name [delete])
+  Get X property name from window. Delete if delete is given and non-false.
+
+(set-x-property! window name value [append])
+  Set X property name on window to value. Append if append is given
+  and non-false.
+
+(get-x-default program option)
+  Get values from the X resource database.
+
+(window-was-on-screen [window])
+  Returns true if Gwm is processing existing windows.
+
+(list-of-screens)
+  Get the list of all managed screens.
+
+(list-of-windows [arg] ...)
+  Get a list of managed windows. Possible arguments are:
+  'window          only windows are returned (not icons)
+  'icon            only icons
+  'mapped          only mapped windows
+  'stacking-order  sorted in stacking order
+  'all-screens     windows on all screens (default is only on current)
+  screen           only on this screen
+
+(deco-at-position x y [screen])
+  Return the decoration at position (x, y) on the screen.
+
+(window-at-position x y [screen])
+  Return the window at position (x, y) on the screen.
+
+(pointer-position)
+  Return a list with current x, y, modifiers, and screen of the pointer.
+
+(warp-pointer x y [rel-window])
+  Move pointer to (x, y) relative to the current position, or relative
+  to rel-window.
+
+(width obj)
+(height obj)
+(dimensions obj)
+  Get the dimensions of obj (label, pixmap, or deco)
+
+(register-gnome-compliance)
+(unregister-gnome-compliance)
+  Register and unregister gnome compliance, i.e. signal to the clients
+  whether some gnome compliance is supported.
+
+(check-gnome-compliance)
+  Return true if gnome compliance is currently registered.
+
+(register-gnome-feature feature)
+(unregister-gnome-feature feature)
+  Signal to the clients that the feature (as an atom) is (or is not)
+  supported by this GWM profile.
+
+(check-gnome-feature feature)
+  Return true if the gnome feature is supported by this GWM profile.
+
+(execute arg ...)
+  Execute the command given by the arguments. Returns process id. Use
+  the function waitpid to wait for synchronous execution.
+
+(restart [arg] ...)
+  Restart Gwm, or start the program given by the arguments.
+
+(end)
+(quit)
+  Quit Gwm.
+
+USER PROVIDED FUNCTIONS:
+
+(describe-screen screen)
+  Should use modify-deco on screen to give it the desired properties
+  and behavior for a root window, and then return it.
+
+(describe-window win)
+  Should build and return a window decoration around win.
+
+(describe-icon win)
+  Should build and return an icon decoration for the window win.
+
+---------
+(user-move-window window triggering-event [key val] ...)
+  Let the user drag an outline of the window to its new place. Keys are:
+  :cursor
+
+(user-resize-window window triggering-event [key val] ...)
+  Let the user resize the window by dragging an outline. Keys are:
+  :cursor
+  :corner-size
+

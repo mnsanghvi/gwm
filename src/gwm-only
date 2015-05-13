@@ -1,0 +1,357 @@
+extern "C" {
+#ifdef HAVE_GUILEREADLINE
+#ifdef HAVE_GUILE_READLINE_READLINE_H
+#include <guile-readline/readline.h>
+#else
+extern void scm_readline_init_ports (SCM inp, SCM outp);
+#endif
+#endif
+#include <readline/readline.h>
+#include <readline/history.h>
+#ifdef MISSING_RL_DEPREP_TERMINAL_DECL
+void rl_deprep_terminal(void);
+#endif
+#ifdef NEED_RL_FUNCTION_CAST
+#define RL_FUNCTION_CAST (VFunction *) 
+#else
+#define RL_FUNCTION_CAST 
+#endif
+}
+
+
+void handle_stdin_command(char* cmd);
+char* gwmprompt(int n);
+
+
+int GWM_stdin = 1;
+int GWM_prompt = 1;
+
+/*
+ * Main body of GWM:
+ * 	- parse arguments
+ * 	- initialize X
+ * 	- initialize Guile
+ * 	- read user profile
+ * 	- decorate all already present windows
+ * 	- enter main loop: GWM_ProcessEvents
+ */
+
+void main2(int argc, char** argv)
+{
+  ScreenContext* scr;
+
+  GWM_Initialize();
+
+  GWM_is_starting = 1;
+  if (gwm_init_profile())
+    fprintf(stderr, "GWM Warning: error while reading profile\n");
+  FOR_ALL_SCREENS(scr) {  // decorate and open all screens and their windows
+    scr->Initialize();
+  }
+  GWM_is_starting = 0;
+
+  /* send signal if a process is waiting for gwm to come up */
+  if (GWM_kill_pid) {
+    kill(GWM_kill_pid, GWM_kill_pid_sig);
+  }
+
+  if (GWM_stdin && GWM_prompt &&
+      !isatty(SCM_FSTREAM(scm_current_input_port())->fdes))
+    GWM_stdin = 0;
+  if (GWM_stdin) {
+#ifdef HAVE_GUILEREADLINE
+    scm_readline_init_ports(scm_current_input_port(), scm_current_output_port());
+#endif
+    rl_callback_handler_install(gwmprompt(0), RL_FUNCTION_CAST handle_stdin_command);
+  }
+  while (1) 	/* MAIN LOOP */
+    gwm_call_with_catch((scm_t_catch_body) GWM_ProcessEvents, (void*)1);
+}
+
+int main(int argc, char** argv)
+{
+  GWM_argc = argc;
+  GWM_argv = argv;
+  GWM_getopts(argc, argv);		/* options & open display */
+  gh_enter(argc, argv, main2);
+  return 0;
+}
+
+static int global_handle_stdin_level = 0;
+static int global_handle_stdin_shown = 1;
+static char* global_handle_stdin_cmd = 0;
+static char* global_handle_stdin_saved = 0;
+
+char* gwmprompt(int n)
+{
+  static char buf[20];
+  if (!GWM_prompt)
+    return "";
+  if (n == 0)
+    sprintf(buf, "gwm> ");
+  else
+    sprintf(buf, "gwm:%d> ", n);
+  return buf;
+}
+
+void handle_stdin_check_prompt()
+{
+  if (!global_handle_stdin_shown) {
+    rl_callback_handler_install(gwmprompt(global_handle_stdin_level),
+                                RL_FUNCTION_CAST handle_stdin_command);
+    global_handle_stdin_shown = 1;
+  }
+}
+
+void handle_stdin_command_inner(char* cmd)
+{
+  SCM res;
+  ScreenContext* currscr = Context;
+  add_history(cmd);
+  SetContext(cmd_screen);
+  res = scm_c_eval_string(cmd);
+  free(cmd);
+  cmd_screen = Context;
+  SetContext(currscr);
+  if (global_handle_stdin_shown) {
+    scm_newline(scm_current_output_port());
+    global_handle_stdin_saved = strcpy(new char[strlen(rl_line_buffer)+1],
+                                       rl_line_buffer);
+  }
+  if (res != SCM_UNSPECIFIED) {
+    scm_write(res, scm_current_output_port());
+    scm_newline(scm_current_output_port());
+  }
+}
+
+void handle_stdin_command(char* cmd)
+{
+  if (cmd && *cmd) {
+    global_handle_stdin_cmd = cmd;
+    rl_callback_handler_install("", RL_FUNCTION_CAST handle_stdin_command);
+    global_handle_stdin_shown = 0;
+  } else if (cmd)
+    free(cmd);
+}
+
+void handle_stdin_char()
+{
+  SCM cmd;
+  global_handle_stdin_cmd = 0;
+  handle_stdin_check_prompt();
+  rl_callback_read_char();
+  if (global_handle_stdin_cmd) {
+    global_handle_stdin_level++;
+    gwm_call_with_catch((scm_t_catch_body) handle_stdin_command_inner,
+                        global_handle_stdin_cmd);
+    global_handle_stdin_level--;
+    rl_callback_handler_install(gwmprompt(global_handle_stdin_level),
+                                RL_FUNCTION_CAST handle_stdin_command);
+    if (global_handle_stdin_shown && global_handle_stdin_saved) {
+      rl_insert_text(global_handle_stdin_saved);
+      rl_redisplay();
+      delete [] global_handle_stdin_saved;
+      global_handle_stdin_saved = 0;
+    }
+    global_handle_stdin_shown = 1;
+  }
+}
+
+
+/* CloseEverything
+ * n = 	0 normal (end)
+ * 	1 error (we can still print messages)
+ * 	-1 fatal error (connection closed)
+ */
+
+void gwm_end(int n)
+{
+  ScreenContext* scr;
+  if (n >= 0 && !GWM_is_starting) {
+    XSetErrorHandler(NoXError);
+    if (!GWM_WidgetMode)
+      GWM_re_init_PointerRoot();
+    XSync(dpy, True);
+    if (!GWM_is_ending) {
+      GWM_is_ending = 1;
+      if (GWM_rubber_feedback)
+        UnDrawRubber();
+      if (Fsm::ServerGrabbed())
+        Fsm::ClearGrabs();
+      FOR_ALL_SCREENS(scr)
+        scr->Close();
+    }
+    XCloseDisplay(dpy);
+    if (GWM_stdin)
+      rl_callback_handler_remove();
+  }
+  exit(n);
+}
+
+
+SCM_DEFINE(gwm_sleep, "sleep", 1, 0, 0,
+           (SCM sec),
+           "Wait (at least) the given number of seconds (a real number). Always"
+           "returns 0 for compatibility with the standard sleep function.")
+{
+  if (!gh_number_p(sec))
+    gwm_wrong_type_arg(s_gwm_sleep, 1, sec, "number");
+  GWM_InternSleep((int) (gh_scm2double(sec)*1000));
+  return gh_int2scm(0);
+}
+
+SCM_DEFINE(gwm_usleep, "usleep", 1, 0, 0,
+           (SCM usec),
+           "Waits (at least) the given number of microseconds (actually rounded"
+           "to a whole number of milliseconds).")
+{
+  int rest;
+  if (!scm_is_integer(usec))
+    gwm_wrong_type_arg(s_gwm_usleep, 1, usec, "integer");
+  rest = gh_scm2int(usec);
+#ifdef HAVE_USLEEP
+  if (rest < 2000)
+    usleep(rest);
+  else 
+#endif
+    GWM_InternSleep(rest / 1000);
+  return gh_int2scm(0);
+}
+
+SCM_DEFINE(gwm_waitpid, "waitpid", 1, 1, 0,
+           (SCM pid, SCM options),
+           "")
+{
+  int s, res;
+  int status, ioptions;
+  ChildEle* child;
+  must_be_number(s_gwm_waitpid, pid, 1);
+  if (SCM_UNBNDP(options))
+    ioptions = 0;
+  else {
+    must_be_number(s_gwm_waitpid, options, 2);
+    ioptions = scm_to_int(options);
+  }
+  if (!(ioptions & WNOHANG)) {
+    child = new ChildEle(scm_to_int(pid));
+    child->next = ChildQueue;
+    ChildQueue = child;
+    res = waitpid(scm_to_int(pid), &status, WNOHANG | ioptions);
+    if (res == -1) {
+      // We are going to return
+      ChildQueue = child->next;
+      delete child;
+      if (errno != ECHILD)
+        scm_syserror(s_gwm_waitpid);
+      else
+        errno = 0;
+    } else {
+      // Start looping
+      if (GWM_stdin)
+        handle_stdin_check_prompt();
+      if (XPending(dpy))
+        GWM_ProcessEvents(0);
+      while (!child->dead) {
+        s = GWM_AwaitInput(100);
+        if (s > 0)
+          GWM_ProcessEvents(0);
+      } 
+      status = child->status;
+      res = 0;
+      ChildQueue = child->next;
+      delete child;
+    }
+  } else {
+    res = waitpid(scm_to_int(pid), &status, ioptions);
+  }
+  return scm_cons (gh_int2scm(0L + res), gh_int2scm(0L + status));
+}
+
+
+
+
+
+
+
+
+
+------------------
+gww only:
+
+
+void gww_init();
+void gww_exit();
+int gww_process_events();
+
+
+void gww_init()
+{
+  ScreenContext* scr;
+  GWM_OpenDisplay(0);
+  GWM_Initialize();
+  GWM_is_starting = 1;
+  FOR_ALL_SCREENS(scr) {  // decorate and open all screens and their windows
+    scr->Initialize();
+  }
+  GWM_is_starting = 0;
+}
+
+void gww_exit()
+{
+  ScreenContext* scr;
+  if (!GWM_is_starting) {
+    XSetErrorHandler(NoXError);
+    GWM_re_init_PointerRoot();
+    XSync(dpy, True);
+    if (!GWM_is_ending) {
+      GWM_is_ending = 1;
+      if (GWM_rubber_feedback)
+        UnDrawRubber();
+      if (Fsm::ServerGrabbed())
+        Fsm::ClearGrabs();
+      FOR_ALL_SCREENS(scr)
+        scr->Close();
+    }
+    XCloseDisplay(dpy);
+  }
+}
+
+int gww_process_events()
+{
+  GWM_ProcessEvents(0);
+  return 1;
+}
+
+
+
+-------------------
+Skillnader i:
+
+
+int GWM_AwaitInput(int maxtime)
+
+
+void GWM_ProcessEvents(int blocking)
+
+
+SCM GWM_AwaitPointerEvent(int rest)
+
+
+int GWM_Initialize()
+
+
+void GWM_BusErrorSignalHandler(int sig)
+
+
+void GWM_InteruptSignalHandler(int sig)
+
+
+void GWM_SignalsInit()
+
+
+void GWM_getopts(int argc, char** argv)
+
+
+void usage()
+
+

@@ -1,0 +1,1943 @@
+
+      GWM-2.0  ---  The Generic Window Manager version 2
+
+                  Anders Holst (aho@sics.se)
+
+
+Description
+
+Gwm-2.0 is a Generic Window Manager for the X11 window system. As a
+window manager, it is responsible for decorating other programs
+client windows (e.g. with titlebars and useful buttons), for letting
+the user perform various operations on these windows (such as moving,
+resizing or iconifying), and for responding to requests from the X11
+server and from other X11 clients.
+
+Gwm-2.0 is extendible in the language Guile, a dialect of Scheme. This
+means that it is possible to specify the the exact appearance and
+behavior of the window decorations, and the entire desk top model,
+using Guile. The ambition is that Gwm should be so general that it can
+imitate any other window manager.
+
+Gwm-2.0 is mainly intended for those who want to have absolute control
+over their desktop environment, and for those who want to experiment
+with new desktop models and new window appearances and
+behaviors. Users who are completely content with their current window
+manager and desktop model, probably have little to gain from switching
+to Gwm. Everyone else should try Gwm; you will be able to get a window
+manager that behaves exactly the way you prefer, and that you can
+modify as your needs changes.
+
+There are several other window managers, some of which are also
+extendible in Guile or Scheme or Lisp, and therefore very
+general. However, we feel that many of these are modifiable at "the
+wrong level". A general window manager has to be modifiable on a low
+enough level so that all conceivable window appearances and behaviors
+can be implemented. At the same time it has to be on a high enough
+level, so that users should not need to bother about the peculiarities
+of X11 library calls, and the details of correctly implementing
+protocols for communication with other clients. Much effort has been
+spent on providing Guile primitives that are both intuitive and easy
+to use, and at the same time powerful enough to enable the user to
+control the desktop environment in detail.
+
+Gwm-2.0 builds directly on the concepts and ideas of Gwm-1, but is
+thoroughly rewritten to use Guile instead of WOOL as extension
+language, and to provide a more intuitive programming environment
+with more advanced interfaces to many X11 features.
+
+
+Using Gwm
+
+  Usage
+
+Usage:   gwm OPTIONS [host:display]
+Normal options are:	
+    -f file      use file instead of gwm.scm
+    -p path      use path as Gwm path	
+    -p +path     appends to Gwm path	
+    -p -path     prepends to Gwm path	
+    -d display   manage display
+    -x screens   do not manage screens, e.g. -x3,2,5
+    -k pid       send signal (def. SIGALRM) to pid when init is done
+    -K signal    number of signal to send for -k option
+    -1    manages only 1 screen, the default one
+    -r    retries till it can manage screens
+    -b    do not read Guile commands from stdin
+    -n    suppress prompt when reading from stdin
+    -q    quiet: do not print startup banner
+Debug options are:	
+    -I    input focus remains PointerRoot
+    -F    no freeze: never freeze server during grabs
+    -M    map all windows, including unmapped ones, on startup	
+    -S    synchronize X calls	
+Help options are:	
+    -V    print Gwm version and exit
+    -h,-? print this usage help and exit
+
+
+  Starting Gwm
+
+The simplest way of starting Gwm is to write "gwm" in a terminal
+window. Gwm will then:
+* Try to get control over all screens on the current display.
+* Load the Guile code for the current Gwm profile, describing the
+  appearance and behavior of windows and the desktop.
+* "Decorate" all the windows and the desctop according to this
+  description. 
+* Enter the main event loop, responding to events according to the
+  same description.
+There will also be a prompt in the terminal window, where guile
+commands can be given directly to Gwm.
+
+  Configuring Gwm
+
+Gwm is completely configurable in the language Guile. On startup Gwm
+reads a file with Guile code describing the appearance and behavior of
+Gwm. The default file to read is "gwm.scm". It in turn loads a number
+of standard packages with various utility functions that are useful in
+most Gwm profiles. Then it loads a file with user preferences, by
+default called "gwmrc.scm" and located in the users home directory or
+in a subdirectory called "gwm". In it the user can specify a number of
+additional packages to load, and set various configuration variables
+for the diffrerent packages. 
+
+Using the "-f" option when starting Gwm, an alternative profile
+instead of "gwm.scm" can be specified. Some alternative profiles, are
+included in the distribution, for example "fast.scm", twm.scm",
+fvwm.scm" and "wm2.scm". Except for "fast.scm" which is a profile with
+the minimal amount of code necessary to use Gwm, these other profiles
+are just special cases of what can be achieved with the standard
+profile. Indeed, the first thing they do is to load "gwm.scm", and
+then they load additional packages and set variables that can as well
+be done in "gwmrc.scm". They are actually set up so that they can
+either be used as main profiles using the "-f" option, or be loaded
+from "gwmrc.scm" (or replace it).
+
+When using the standard profile, an alternative personal configaration
+file instead of "gwmrc.scm" can be specified by setting the
+environment variable GWMRC to the name of that file before starting
+Gwm. 
+
+There are some packages meant to simplify configuration by letting the
+user fill in values in a dialogue instead of editing a file. If
+the user has no "gwmrc.scm" file when Gwm is started (with the
+standard profile), a package called "init-config" will be used to ask
+the user about some simple preferences (window style, focus mode, desk
+top model, and available menus) and construct a "gwmrc.scm" file from
+that, with reasonable initial values of different variables.
+
+Another package to let the user configure Gwm via dialogues is
+"custom-menu". It can usually be accessed by selecting "Customize" in
+the root menu, or by calling the function '(custom-menu)' in some
+other way. Each loaded package will be represented by a subdialogue
+where all declared variables in the package can be adjusted. In
+principle everything in Gwm should be possible to customize in these
+dialogues, but there are some things that may be more convenient to
+edit directly in the file, as for example menu contents.
+
+
+  Standard Packages
+
+    Desktop models
+
+With "desktop model" is meant how the space where the windows and
+their icons reside is perceived. This includes whether the windows
+seem to be placed in a "virtual screen" larger than the physical
+screen that scrolls around on this virtual screen, or whether the
+windows are sorted into separate "rooms", one or more of which can be
+visible at any time. It also includes how iconified windows are
+handled: do they appear as icons visible on the background, or do they
+end up in an icon manager, an icon bar, or a popup menu. In a wider
+sense, the desktop model may also include things like what focus mode
+is used, and how and where new windows are placed on the screen.
+
+Unlike most window managers, the possible desktop models are not
+predefined in Gwm. Instead they are specified using Guile. This makes
+it possible to experiment with non-standard desktop models, and to
+finetune them to a high degree. Guile packages for some standard
+desktop models are provided as a start:
+
+* Virtual screen
+  A number of files contains functionality to implement an arbitrary
+  large (save the restrictions of X11) virtual screen, on which you
+  can scroll around to visit different windows. "virtual.scm"
+  implements the basic functionality (gnome compliantly). "virtual-map.scm"
+  provides a map over the virtual screen, for navigation and for
+  moving windows. "virtual-door" implements buttons that lead directly
+  somewhere on the virtual area. "virtual-pan" implements auto-panning
+  on the virtual area.
+
+* Rooms
+  The file "rooms.scm" implements the basic functionality for placing
+  windows into different rooms (also gnome compliantly). "room-mgr.scm"
+  provides buttons that lead to the different rooms. Rooms can be used
+  at the same time as the virtual screen, then making each room into a
+  virtual area. The file "virtual-rooms.scm" then provides a bar of
+  maps for the different rooms, that replaces both the room buttons
+  and the single virtual area map.
+
+* Icon manager
+  The file "icon-mgr.scm" implements an icon manager ala Twm, i.e. a
+  fixed meny with entries for all windows (both iconified and not),
+  from which the windows can be controlled. It is also possible to use
+  multiple icon managers, i.e. windows of different types are sorted
+  into different fixed menus.
+
+* Window and icon placements
+  Unless anything else is specified (by the window manager or the
+  client) new windows are placed by X11 in the upper left corner of
+  the screen, which is usually not very convenient. The file
+  "placements.scm" contains a number of functions for controlling the
+  initial placement of new windows and their icons. The default
+  behavior of Gwm when this file is loaded, is to either let the user
+  position new windows with the mouse, or to place them
+  "pseudo-randomly" on the screen (using small vertical and horizontal
+  ofsets from the last window placed), depending on the value of the
+  variable 'place-randomly'. Other placement methods for windows of
+  specific types can be assigned with the function '(set-placement TYPE
+  FUNCTION)', and for icons with '(set-icon-placement TYPE FUNCTION)'. 
+  
+* Focus mode
+  The file "focus.scm" implements different focus modes: focus on
+  enter (with or without delay, and with or without "sloppiness"),
+  focus on click, or focus on the topmost window.
+
+* Stacking order
+  Some windows should be permanently placed above all other windows
+  (like control panels or task bars etc.) or under them (as
+  backgrounds perhaps). This is controlled by the code in
+  "stack-mgr.scm". 
+
+
+    Window and icon styles
+
+Much of the visual appearance of the window manager lies in the window
+and icon decorations. In Gwm this is controlled by decoration
+functions that take the (undecorated) window as argument, and adds
+subdecorations around it. There are several Guile packages included
+that provides such decoration functions. Typically a window decoration
+function is called '*-window' and resides in a file with the same name
+(plus the ".scm" suffix). Icon decorations are called '*-icon' and are
+sometimes defined in the same file as the window and sometimes in a
+file called "*-icon.scm".
+
+Examples of packages defining window (and icon) decorations are
+"twm-window/icon.scm", "fvwm-window/icon.scm", "wm2-window/icon.scm",
+"aquax-window.scm", and "panel-window.scm". To specify which
+decoration to use for a window of a certain type, use '(set-window
+TYPE FUNCTION)', and '(set-icon TYPE FUNCTION)' for the icon, where
+TYPE is the X11 class of the window, or #t for all windows. If the
+function is not yet defined, the file of the same name as the function
+will be loaded first.
+ 
+There is also a way to automatically generate additional window, icon
+and menu decorations: The code in "etheme-compile.scm" can compile an
+Enlightenment theme into a scheme file suitable for loading into Gwm
+either with the "-f" flag or from the "gwmrc.scm" file. (This code is
+experimental and does currently not mimic all aspects of the theme,
+but it is still fairly good.)
+
+
+    Popup menu style and content
+
+For some window and icon styles there is a corresponding menu style. A
+menu style is represented as a context list containing different
+decoration functions for different kind of menu entries. Sometimes a
+menu style is defined in the same file as the corresponding window
+decoration, sometimes in a file called "*-menu.scm". To use a specific
+menu style, first load the file containing the definition, and then
+set the variable 'default-menu-style' to it, for example '(set!
+default-menu-style fvwm-menu-context)'. This will only take effect for
+menus created after this call.
+
+The menu content is (of course) separate from the menu style. The
+basic principle when constructing a popup menu is to create a menu
+decoration containing the appropriate labels and their corresponding
+actions. This menu decoration is then activated by calling 'menu-pop'.
+This call is suitably bound to some button press. 
+
+The first step, of creating the menu decoration, can be done in a few
+different ways. One is to use the function 'construct-menu', which
+takes a menu context and a number of entry descriptions. An entry
+description may be a string giving a label in the menu, or a list with
+a string and a function to execute when this menu item is
+selected. The second element in this list may also be a new list of
+entry descriptions, giving a submenu.
+
+To simplify things, the file "popups.scm" implements shortcuts for
+producing some typical menus. The function '(make-command-popup NAME
+COMMAND-LIST)' makes a menu with shell commands to execute. The
+function '(make-machine-popup NAME COMMAND MACHINE-LIST)' makes a menu
+that runs COMMAND on various remote machines (using "rsh" or
+"ssh"). '(make-machine-command-popup NAME1 MACHINE-LIST NAME2
+COMMAND-LIST)' makes a double menu where you can select both a remote
+machine, and a shell command to run on that
+machine. '(make-windows-popup NAME)' makes a menu with all current
+windows. The function '(make-popup NAME LIST)' is just a wrapper
+around 'construct-menu', and takes a menu name and a list of entry
+descriptions.
+
+
+    Utility functions
+
+There is a number of additional files with useful functions for
+various situations. Some examples are:
+
+* "keyfocus.scm"
+  This file makes it possible to switch focus between windows with the
+  keyboard instead of with the mouse.
+
+* "zoom.scm"
+  Implements "zooming", i.e. maximizing a window in some direction. It
+  is possible to specify different default zoom styles for different
+  windows, e.g. vertical for xterms, full zoom for emacs, and
+  proportional zoom for images.
+
+* "window-func.scm"
+  Contains a number of functions for window operations, like
+  'toggle-iconify-window', 'raise-lower-move-window', functions for
+  hiding and showing windows, and functions for shading/unshading
+  windows (in case the used window decoration supports this).
+
+
+Programming Gwm
+
+There are some different levels on which Gwm can be used. First, you
+can just use a predefined profile, possibly adjusting it using the
+Customize menu option. On the second level you may want to modify some
+minor things to your taste by adding code to "gwmrc.scm" or
+"menurc.scm". You may for example define a new function and bind it to
+some button or key for some type of window. Finally, you may start
+writing entire packages for Gwm. This and the following sections are
+mainly intended for those in that third category.
+
+  Three kinds of "minimal" profiles
+
+To realize what is provided by the C++-level of Gwm and what is
+controlled by Guile-code, it is useful to test Gwm with a minimal
+amount of Guile code. There are at least three different profiles that
+can be considered "minimal" in different ways.
+
+    No profile
+
+The first way is to not use any Guile code at all. This can be
+achieved by for example starting Gwm as "gwm -f /dev/null" (which
+makes Gwm try to start with the profile found in /dev/null, which 
+contains nothing at all). 
+
+Gwm will start, but give a number of warnings like these:
+  Warning: "describe-screen" is undefined, using empty decoration
+  Warning: "describe-window" is undefined, using empty decoration
+  Warning: "describe-icon" is undefined, using empty decoration
+From the users perspective it will appear that there is no
+window manager at all - the windows look just as they did before gwm
+was started, and it is for example not possible to easily move or
+iconify the windows using the mouse. There are two things that differ
+from when there are no window manager though:
+
+First, Gwm is actually responding to requests from the server and
+the clients, and it handles the clients iconification state. This
+means that a client may ask Gwm to be moved, resized, or iconified,
+and Gwm will obey this.
+
+Second, if Gwm was started in a terminal window, there is a prompt at
+which Guile commands can be given to Gwm. The function
+'list-of-windows' will return a list of all windows, for which it is
+then possible to for example find out information
+('window-name', 'window-width', 'window-iconified?', etc.), perform
+various window operations ('move-window', 'raise-window',
+'iconify-window', 'delete-window', etc.), or modify the window
+appearance and behavior ('modify-deco', 'redecorate-window',
+'set-deco-behavior', etc.). In principle you can gradually build up
+your entire window manager appearance by just giving commands at the
+prompt. However, this is of course a very awkward way of doing it.
+To quit Gwm, give the command '(end)' or '(quit)' at the prompt.
+
+
+    The "fast" profile
+
+The above alternative is minimal in the sense that there is no Guile
+code involved. If you instead want a profile with a minimal amount
+of Guile code that is still functional and doesn't give any warnings
+on startup, an example of this can be found in the file "fast.scm". To
+use it, start Gwm with "gwm -f fast". 
+
+Visually there is still no difference: the windows look boringly
+undecorated. However, there is (or should be) no warning messages when
+Gwm starts, and you actually have some functions bound to the mouse
+buttons: the left button together with the shift key lowers the
+window, the middle button with shift lets the user move the window,
+and the right button with shift raises the window. The right button
+with shift on the background makes Gwm quit. Isn't that all the
+functionality you need in a window manager really ?
+
+If you look at the code in "fast.scm", you will see four function
+definitions. The first function, 'user-move-window', is a utility
+function that lets the user move a window with the mouse. It was
+previously a built in function, but to make it more general it is now
+specified in Guile instead. The last three function definitions are
+the important ones here. They define 'describe-screen',
+'describe-window', and 'describe-icon'. Gwm requires these three
+functions to be defined (or you will get a warning and Gwm assumes a
+trivial function), and all functionality you will get in Gwm is in one
+way or another provided by these functions (possibly except
+functionality from commands that you give at the prompt).
+
+The function 'describe-screen' is used to specify how the screen
+should behave (i.e. what functions are run when buttons or keys are
+pressed on the background) and look (background color and cursor
+type), and what "special items" (menu bars, buttons, virtual maps,
+etc.) are shown. It should take a screen object, and return the same
+object after having modified it appropriately. In this example, a
+function that beeps will be called on startup, and the third mouse
+button together with the shift modifier is made to quit Gwm.
+
+The function 'describe-window' specifies in the same way how windows
+should look and behave. It takes a client window object, but unlike
+'describe-screen' it can either return the same object suitably
+modified, or embed the client window in a larger decoration
+(e.g. frames, titlebar, buttons, etc.) that is returned. In this
+example the client window is modified with a new behavior that makes
+the mouse buttons (with the shift modifier) lower, move, or raise the
+window. The keyword :steal set to true means that Gwm should steal
+this event from the client if the client happens to have its own
+action bound to the same button.
+
+Finally, 'describe-icon' specifies the appearance of icons. It takes a
+window object, and should construct a new decoration to use as an icon
+for that window. Some clients provides specific windows or pixmaps to
+use in the icon, which then can be used in the icon decoration. In
+this case the icon simply consists of a text label with the icon name of
+the window. 
+
+
+    The standard profile
+
+There is a third way to start Gwm that gives the same minimal look of
+the windows, but uses a large amount of Guile code. When the standard
+profile in gwm.scm is used, a file with the users personal preferences
+(gwmrc.scm) is loaded. If that file is empty, windows will also look
+undecorated. However, now there are a large number of hooks, standard
+behaviors, and convenience functions loaded, ready to be used. For
+example, the left mouse button together with suitable modifiers (alt
+and control by default) now raises, lowers, or moves the window
+depending on whether the window is obscured or not, and whether the
+user drags it or not. The user can also choose among some different
+focus modes, and the initial placement of new windows will be slightly
+more intelligent than to put them in the top-most corner. 
+
+In general, your "gwmrc.scm" file will not be completely empty. By
+loading various packages and setting various variables in
+this file, you can immediately utilize a large amount of predefined
+functionality, window appearances, and desktop model options.
+
+When writing your own profile or Gwm package, this is the prefered
+state of Gwm to start from. If your package makes use of the standard
+utility functions when possible, and uses the standard hooks and
+behaviors when appropriate, rather than redefining everything from
+scratch, it is more likely that your package will work together with
+all other Gwm packages.
+
+
+  Interfacing Standard Packages
+
+If you start writing your own Gwm profile or package, there are a
+number of useful utility functions, and a number of recommended ways
+to do things to make the new code compatible with existing Gwm code.
+
+A general idea is that to make it possible for different packages to
+work together, and to make it easier to write new packages, it is
+important to separate "appearance" from "functionality" as much as
+possible. With "appearance" is here meant both the "static" visual
+appearance of a window or menu or other item, and how that appearance
+changes on various events (like entering a window or pressing a
+button). With "functionality" is here meant functionality that is
+independent of the exact visual appearance, but should exist for all
+windows or menus etc. Typical examples are operations that some other
+package wants to perform on any window (e.g. an icon manager that
+wants to iconify or raise another window, and wants to know whenever
+the window is iconified by some other means) or operations that the
+client itself performs on the window (e.g. changes the window or icon
+name). The way to solve this is to make up an items behavior of both a
+specific bahavior and a standard protocoll behavior that takes care of
+the standard operations that other packages may want to perform, and
+relays the necessary informtion to the specific behavior, which can then
+make the appropriate changes to the visual appearance if necessary.
+
+    Standard window interface
+
+To make the behavior of different window styles consistent with each
+other, and to make them work with all other Gwm packages, there are
+a number of predefined behaviors and hooks to use when defining new
+window styles and new packages that interact with windows.
+
+In a new window style, the outermost decoration should be given a
+behavior like this:
+  (make-behavior window-behavior my-specific-behavior std-window-behavior)
+
+The 'std-window-behavior' takes care of the standard operations, like
+setting focus, and managing name changes. 'window-behavior' is a user
+definable variable which maps different button and key presses to
+different window functions (lowering, raising, moving, etc). Finally,
+'my-specific-behavior' (which of course can be called anything, but
+should typically start with the window style name and end with
+'-behavior') contains the specific behavior for this window style.
+
+The 'std-window-behavior' sends a number of user events that the
+specific behavior, and the behaviors of the sub-decorations, may
+listen to, and respond to with suitable changes in the window
+appearance. The event 'focus-in' are sent when the window gets the
+focus, 'focus-out' when the window looses focus again, and
+'name-change' when the window changes name. The icon of the window is
+also sent the user event 'name-change' when the window or icon name
+changes, and the event 'icon-pixmap-change' whenever the client signals
+that it has changed the recommended pixmap to use in its icons.
+
+The 'std-window-behavior' also calls a number of hooks in response to
+various events: 'focus-in-hook', 'focus-out-hook', 'enter-window-hook',
+'leave-window-hook', 'map-window-hook', 'unmap-window-hook', and
+'name-change-hook'. These hooks are typically used by various desktop
+model packages, that needs to update their states in response to
+these changes to the windows.
+
+    Standard menu interface
+
+In the same way, when defining a new menu style, there are some
+standard code that can be reused. The menu code of Gwm separates three
+aspects of the menus: Their appearance (the coloring and shape), their
+functionality (how to handle cascaded menus, and how to respond if the
+button is released at different places inside or outside of the menu,
+etc), and their contents (the actual commands that the user wishes to
+run). The contents should be specified by the end user. The appearance
+is specified by the selected menu style. The standard menu code tries
+to provide the functionality part, and to link all three aspects
+together. 
+
+A standard menu consists of parts of (currently) three different
+functional types: items (the actual menu elements associated with
+actions or sub-menus), labels (passive elements with text), and
+separators (even more passive elements without text, typically to mark
+a new section in the menu). A "menu style" should provide functions
+for creating each of these part types, as well as a function for
+creating the outer menu containing the parts. These functions should
+in turn use standard behaviors that provides the standard menu
+functionality.
+
+In more detail, a menu style is made up of a context list containing
+values for the tags :menu-func, :item-func, :label-func, and
+:separator-func. The tag :separator-func should have a function that
+takes no arguments and produces a decoration for a menu section
+separator. It needs no particular behavior. The tag :label-func should
+have a function that takes the label string as its only argument, and
+produces a decoration for that menu label. This decoration should use
+a behavior containing 'std-menu-label-behavior'.
+
+The tag :item-func should have a function that produces a decoration
+for a menu item. It takes the name of the item, and an action as
+argument. The action is either a function to run (with one argument -
+the decoration of the caller of the menu, i.e. typically the
+decoration that should be affected by the command) when the item is
+selected, or another menu to be used as a sub-menu. The item
+decoration should use the std-menu-item-behavior as part of its
+behavior. The decoration or any part of it could listen to the user
+events 'active' and 'inactive', which means that the item is entered
+or left, and give the appropriate visual feedback. The item decoration
+should also on its top level have either a property 'action' with the
+function to run on selection, or a property 'menu' with the sub-menu
+to use.
+
+Finally, the tag :menu-func should have a function that produces the 
+entire menu decoration given as arguments the decorations produced by
+the other functions. It should use std-menu-behavior as part of its 
+top behavior.
+
+If this simple protocol is followed, the function 'construct-menu' can
+take a menu style and a user supplied high level description of the
+menu contents, and produce a menu from this that looks according to
+the style and behaves consistently with all other Gwm menus.
+
+
+    Defining user options
+
+When defining a Gwm package, there are usually a number of options
+that can be made, in the form of user definable variables. To simplify
+customization of Gwm, all such variables should be settable via the
+customization menus. Fortunately it is very easy to add variables to
+that menu hierarchy. In most cases it is sufficient to use the
+function 'defvar' to define the variables. They will then
+automatically be added as entries in a new customization menu for the
+package.
+
+The function (or macro actually) 'defvar' is called like this:
+  (defvar VARIABLE DEFAULT-VALUE DOCUMENTATION TYPE)
+where TYPE is an atom controlling what kind of entry it will have in
+the customization menu. The only values currently treated specially
+are 'boolean' which gives a checkbox in the meny, and 'list' which gives
+a multi-line entry. The type may also be a list of possible
+alternative values, which gives a selection menu. All other types
+currently gives single line text entries. 
+
+A package may also provide a function to run whenever a customization
+variable has been changed, so that the change can take effect
+immediately. That function is then installed with the function
+'custom-menu-insert-hook'. See the file "custom-menu.scm" for further
+details. 
+
+
+    Redefining builtin functions
+
+Sometimes a packades needs to redefine an existing scheme function,
+either to get information on what happens so it can update its state,
+or as a way to provide its own piece of functionality to every other
+package calling that function. Typical examples are an icon manager or
+a panner window that need to keep track of when windows gets iconified
+or changes state in other ways, to be able to update their appearance.
+
+This may potentially cause problems: If many packages tries to
+redefine the same function, the result will not always be the intended
+one, and it is hard to guarantee that all packages works together with
+each other. 
+
+If you feel the need to redefine a function, you should always first
+consider alternative solutions. Maybe there is already a hook defined
+that can be used instead. For example, 'map-window-hook' and
+'unmap-window-hook' will be called whenever a window appears or
+disappears from the screen, which is one common event that many
+packages need to keep track of. Also, 'iconify-window' would be a hot
+candidate for redefinition by many packages that want to control the
+appearance of icons (like icon managers, icon groups, room managers,
+etc). Fortunately, the functions 'hide-window' and 'unhide-window' can
+be used instead by all these packages to suppress showing the icon. 
+
+However, if you find that you have to redefine a function, this should
+always be done using 'advice'. This function lets you add your own
+code in the beginning, in the end, or "around" the original code. 
+If all packages use this way of redefining functions, chances increases
+drastically that the packages will work together with each
+other. Please se in "advice.scm" for details of how to use it.
+
+
+    Gnome compliance
+    
+Gwm is "sort of" gnome compliant, in the sense that scheme primitives
+are provided that makes it possible to write gnome compliant Gwm
+packages. However, it is then the responsibility of each package to
+actually implement compliance for the aspect that it covers. For
+example, the "virtual.scm" package takes care om gnome interaction
+regarding the gnome "area", and the "rooms.scm" package takes care of
+interaction regarding the gnome "workspace". 
+
+If you write a new package that interferes with some aspect of the
+gnome compliance guidelines, please make sure that you try to make
+your package gnome compliant. 
+
+Typically this involves the following five steps:
+* Call '(check-gnome-compliance)' to see if the user has requested
+  that this session should be gnome compliant. If so, do the
+  following points. 
+* When opening the screen, call 'register-gnome-feature' to tell gnome
+  that the specific feature is supported. Optionally, initialize some
+  gnome X properties to reflect the initial state.
+* When a new window is mapped, check the appropriate gnome X
+  property/properties to see what state the window wishes to be in
+  initially. 
+* Whenever Gwm changes the state for a window, update the appropriate
+  gnome X property/properties.
+* Listen to client message events for the same X properties, and
+  update the state according to this.
+
+
+    Various useful building blocks
+
+There is a number of additional files with useful functions to call
+from your own code. For example:
+
+* "pick.scm"
+  This file defines a function that lets the user pick a window with
+  the mouse, on which some function can then be called.
+
+* "edit-plug.scm"
+  This file implements a number of simple editable "widgets": Editable
+  text boxes, check boxes, and radio buttons. It is used by for
+  example the "dialogue" package below, and in the customization
+  menus. 
+
+* "dialogue.scm"
+  With the functions in this file, it is relatively easy to create
+  interactive dialogs with the user. For example, '(simple-dialogue
+  QUESTION DEFAULT)' will make a window that prompts the user with
+  QUESTION, and returns the string the user writes. The function
+  'complex-dialogue' allows for more complex dialogue boxes.
+
+Further examples of how to implement various things can be found in
+the "scm/demo/" directory in the distribution.
+
+
+  Gwm objects
+
+The two main objects in Gwm are decorations and behaviors. The
+decoration is responsible for the visual appearance of the objects on
+the screen, and the behavior for the mapping of actions to events. 
+
+    Decorations
+
+A decoration is technically an X11 window. Conceptually it is a
+building block of the visual appearance of a window, icon, or menu in
+Gwm. (Actually, the screen is also a decoration although somewhat
+special, see below.) 
+
+Each decoration has a number of properties that can be specified on
+creation (or changed later), for example background and border
+coloring. A decoration may also contain other decorations. Thus, a
+decoration around a client window consists of a hierarchy of
+decorations, with the original client window as one of the innermost
+decorations. Every decoration has a direction, vertical or horizontal,
+in which its subdecorations are tiled. If nothing else is specified,
+the topmost decoration is vertical, and each subdecoration has the
+opposite direction of its parent. Thus a complex decoration is
+built up much like when combining "v-boxes" and "h-boxes" in TeX.
+The size of a decoration is automatically adjusted to make the parts
+fit inside. Giving an empty list as a part of a decoration marks where
+extendable space should be placed.
+
+The tiling of subdecorations in a fixed direction in the decoration
+can be overrridden by specifying an "anchor" of the subdecoration,
+i.e. telling it where in the parent decoration it should be placed. 
+
+All decorations can be in one of two different states: unrealized or
+opened. Some decorations can also be in a third state: valid (which
+means "realized but not yet opened"). 
+
+When a decoration is first created it is unrealized. This means that
+the corresponding window is not created, and as a consequence some of
+the decoration functions are not applicable yet. Most notably, the
+dimensions of the decoration is not calculated yet, so the width and
+height can not be retrieved from the decoration at this stage. This is
+because the dimensions may be affected by the available space in the
+parent window, and the parent is not known until opnening.
+
+When the created decoration is used by Gwm in a window, icon, or menu,
+it is opened, which means that its window is created, its size and
+position within the parent (the screen or another decoration) is
+calculated, and it is made into a subwindow (directly or indirectly)
+of the screen (or of one of them if there are several screens). All
+decoration functions are applicable, and the decoration can start
+responding to events. It may not always be visible on the screen
+though, since it may be unmapped by some reason, e.g. the client
+window it belongs to may be iconified, or the user may have told it to
+hide itself. 
+
+Some decorations can also be in the third state: valid but not
+opened. (An opened window is always valid). This holds for the inner
+client window and any inner icon window that the client provides,
+before they are opened. Their windows are already created and their
+dimensions specified, but they are not placed on any screen and they
+can not respond to events. The same state also holds for the inner
+part of a menu in Gwm, if the user has called `realize-menu' on
+it. This is necessary to do if the size of the menu has to be known
+before it is opened.
+
+The screen is a special decoration. It has no border, and can not have
+any subdecorations nor a parent decoration that it is put inside
+of. (Technically, in X11 all windows are sub-windows of the screen,
+but in Gwm they are not considered to be sub-decorations of the screen
+decoration.) You can specify the screen background, and the screen
+cursor, but otherwise the screen decoration is mainly there to hold
+the screen behavior which controls e.g. popping of root menus and key
+shortcuts.  
+
+Every visible Gwm object that is not a part of a client window or icon
+or screen must be a menu. However, any user created decoration can be
+made into a menu, which means that they need not look much like a
+traditional menu. Indeed, this is the kind of object to use to
+implement desktop features like panner windows, menu bars, screen
+buttons, and dialog boxes. 
+
+Menus can be of two kinds: pop-up or placed. A pop-up menu takes
+control over the X server and does not release it until it is
+unpopped. This means that most event handling by client windows
+and the rest of Gwm is frozen while interaction with the menu
+occurs. Therefore, when you create a pop-up menu, make sure that you
+provide some event in it to unpop it.
+
+A placed menu is decorated just like any window (and can even be
+iconified), and can stay up and continue to operate in parallell
+with all other client windows and Gwm features. Most desktop features
+are implemented as placed menus, whereas traditional menus are
+normally of the pop-up type.
+
+
+    Behaviors and events
+
+In addition to the visual appearance, a decoration can also have a
+behavior associated to it. A behavior is a mapping between events and
+actions, for example that every time a button is pressed over a deco some
+scheme code is to be run.
+
+In more detail, a behavior consists of a set of "event arcs", where
+each event arc contains a triggering event, a scheme function to run
+when the event occurs, and optionally a new behavior to give the
+decoration when the event occurs. For button and key related events it
+may also contain flags whether to steal the event from sub decorations,
+and if so whether to resent it to the sub decoration afterwards. For
+the pure "key" and "button" events, it may contain two scheme
+functions, one to run when the key or button is pressed and the other
+to run on release. 
+
+(In the older Gwm-1 it was important to select either "button" or
+"buttonpress" or "buttonrelease" depending on the function that should
+be run. For example, pop-up menus needed to be called on a press only,
+because the menu would steal the release and a pure "button" would
+therefore hang. On the other hand, killing or iconifying a window must
+be done on a release, since otherwise the window would disappear on
+the press and the release would go to the window underneath, which may
+cause some confusion. In Gwm-2 this is not so critical - unless very
+special behavior is implemented it should suffice to use "button" or
+"key" for everything - it will both handle correctly stolen releases
+without hanging, and wait for releases before actually removing a
+deleted or iconified window.
+
+Another difference from Gwm-1 is the treatment of
+double-clicks. In Gwm-1, if there were both a single and a double press
+event in a behavior, the single press function was run immediately on
+the first press, and then if there were a second press within the
+assigned double click interval, the double press code was run
+too. Gwm-2 on the other hand will only run one of them - it will wait
+for a potential second press before deciding which code to run. Also,
+triple and higher multiplicities of clicks are supported in the same
+way. This will however mean that you may notice a small delay before
+the action takes effect if both single and double presses are used.
+
+However - the double-click handling in Gwm-2 introduces one
+complication: Avoid to use double clicks that are stolen from the
+clients. This will force Gwm to use synthetic events to resend to the
+client when there are only a single click, and some clients won't take
+that.)
+
+The possibility to change the entire behavior on some event gives the
+capability, inherited from Gwm-1, to produce full fledged finite
+automata. However this is often an overkill. State information can be
+stored in the decoration property list, and the action fuctions may do
+different things depending on that information. However, sometimes it
+may be necessary to change the entire behavior when the "state" of the
+decoration is changed, for example when some events should not even be
+subscribed to from the X server in one state, because some other
+window or decoration wants them. (For motion events this trick may be
+necessary to use, since only one window can receive them at a time.)
+
+
+    Paints
+
+A paint is what is used to color the background or border of a
+decoration. A paint can be a pixmap, a color, or one of two special
+colors: "transparent" or "hole". The latter two is what to use to
+produce shaped decorations. The difference between the two is that
+"transparent" makes the current decoration transparent (i.e. shaped)
+so you can se the background of the parent decoration through it,
+whereas "hole" punches a hole through all parent decorations too, so
+you see through to the window underneath or the screen background. The
+former type should be used when doing a specially shaped
+subdecoration, and want the background of the parent decoration to
+shine through (for example using a text label with transparent
+background). The latter type is more convenient to use when the whole
+window should have some special shape (and must be used if you
+want to punch a hole through the client window itself).
+
+When drawing in a pixmap, you can use any paint, including another
+pixmap or the two transparent colors. In general, anywhere where you
+are expected to use a color, you can use a paint. There are a number
+of exceptions though: 
+* Cursor foregrounds and backgrounds need to be pure colors. This is
+  because there seems to be no way in X11 to give a cursor more than two
+  colors.
+* An "active label", which is not stored in a pixmap but gets redrawn
+  every time it is exposed, can also have only pure colors as
+  background or foreground. This is mainly because there is no way to
+  "draw with transparent" in this way, but also because the concept
+  of "active label" is obsolete and will probably be removed.
+* The function `color-components' returns th RGB-components of a pure
+  color, and can not take a pixmap or a transparent color. 
+* When drawing on the screen background, both kinds of transparent
+  will show as black.
+
+A pixmap can, in addition to being used as a paint, be used directly
+as a part in a decoration.
+
+
+    Fonts
+
+When making a label you naturally need a font. Currently you can only
+load fonts accessible through the XLoadFont X11 call, which means that
+you can not create your own fonts or load separate font specification
+files. 
+
+
+    Cursors
+
+For a decoration you can specify what cursor to show when the pointer
+is in that decoration. Cursors can either be created as standard X11
+cursors, or from bitmap files.
+
+
+    Feedback
+
+There are a number of functions provided to simplify the
+implementation of various user interaction and visual feedback
+functionality. A typical scenario is that the user initiates some
+action by pressing a mouse button and keeping it down. Gwm then
+(optionally) freezes the server, and updates some rubber drawings or
+other visual feedback while the user drags the mouse. Finally, when
+the user releases the button, the rubber is removed and the action
+finalized. Typical examples of this is when moving or resizing a
+window. Another scenario is animated effects, like shrinking or
+growing rubber bands when iconifying or deiconifying windows, or
+"animated scrolling" of windows getting shaded or unshaded.
+
+Technically, the purpose of these functions are twofold: To enable
+more varied move and resize behaviours than provided by the built in
+move-window and resize-window in Gwm-1, and to reduce the need for
+the dangerous commands `grab-server' and `ungrab-server' which could
+if carelessly used hang Gwm and the X11 server.
+
+The consequences of the above is that in Gwm-2.0 there are no
+primitives any more to move or resize a window user interactively, but
+this has to be implemented in scheme, whereas careless use of these
+feedback primitives may still hang the server...
+
+  
+
+Reference manual
+
+This section contains all scheme primitives specific to Gwm-2.0 in
+alphabetic order. In addition to these primitives all functions in
+Guile can of course be used.
+
+
+(active-label? obj)
+Return true if obj is an active label.
+
+(behavior? obj)
+Return true if obj is a behavior.
+
+(bell [volume])
+Ring the keyboard bell. An optional argument is the volume in percent.
+
+(button button modifier)
+Make a button event descriptor.
+
+(buttonpress button modifier)
+Make a button-press event descriptor.
+
+(buttonrelease button modifier)
+Make a button release event descriptor.
+
+(check-gnome-compliance)
+Check if gnome compliance is currently registered.
+
+(check-gnome-feature sym)
+Check if the gnome feature sym is supported by this Gwm profile.
+
+(client-message name)
+Make a client-message event descriptor, for the message name (a symbol).
+
+(client-xid->window clientid)
+Find a window from the X id of its client.
+
+(color? obj)
+Return true if obj is a color.
+
+(color-components color)
+Get the rgb-components of color.
+
+(conform-window-size window width height)
+Return a list of an acceptable width and height in pixels according
+to the windows size hints, as close as possible to (but not larger than)
+the given width and height.
+
+(cursor? obj)
+Return true if obj is a cursor.
+
+(cut-buffer)
+Get contents of X cut buffer number 0.
+
+(deco? obj)
+Return true if obj is a decoration.
+
+(deco-add-part! deco num obj)
+Add obj as a new subdecoration at position num in deco
+
+(deco-anchor deco)
+Get the anchor of the deco. If a decoration has an anchor, it is
+considered to be free-floating, i.e. instead of being placed next to
+the other subdecorations, it is placed wherever the anchor specifies.
+
+(deco-at-position x y scr)
+Return the decoration at position (x, y) on the screen.
+
+(deco-background deco)
+Get background color of deco.
+
+(deco-behavior deco)
+Get the behavior of deco.
+
+(deco-bordercolor deco)
+Get border color of deco.
+
+(deco-borderwidth deco)
+Get border width of deco.
+
+(deco-cursor deco)
+Get the cursor used over deco.
+
+(deco-height deco)
+Get height of deco, excluding border.
+
+(deco-hidden? deco)
+Check if deco is made invisible with 'hide-deco'.
+
+(deco-icon? deco)
+Check if deco is part of an icon decoration.
+
+(deco-mapped? deco)
+Check if deco is visible, i.e. it and all parents should be mapped.
+
+(deco-menu? deco)
+Check if deco is part of a menu (or inner part of a placed menu).
+
+(deco-num-parts deco)
+Get the number of sub-decorations of deco
+
+(deco-parent deco)
+Get parent of deco.
+
+(deco-part deco num)
+Get sub-decoration number num of deco.
+
+(deco-parts deco)
+Get a list of all the sub-decorations of deco
+
+(deco-properties deco)
+Get the property list of deco.
+
+(deco-remove-part! deco num)
+Remove sub-decoration number num of deco.
+
+(deco-reorder-part! deco num1 num2)
+Reorder the sub-decorations of deco by moving the one at position num1
+to num2. 
+
+(deco-screen? deco)
+Check if deco is a screen decoration.
+
+(deco-shaped? deco)
+Check if deco has a nonrectangular shape.
+
+(deco-valid? deco)
+Check if deco is opened and valid.
+
+(deco-width deco)
+Get width of deco, excluding border.
+
+(deco-window? deco)
+Check if deco is part of a client window decoration.
+
+(deco-x deco)
+Get x position of deco (relative the screen).
+
+(deco-y deco)
+Get y position of deco (relative the screen).
+
+(deiconify-window window)
+Deiconify the window.
+
+(delete-window window)
+Ask the client window to delete itself. Returns true if it succeeded.
+
+(dimensions object)
+Get the dimensions of obj (a label, pixmap, or deco).
+
+(display-name)
+Get the name of the default screen.
+
+(double-button button modifier)
+Make a double-click event descriptor.
+
+(draw-circle-sector pixmap x y radius [angle1 angle2] [key val] ...)
+Draw a circle sector (or an arc) in pixmap, with center at (x, y) and the
+given radius of the interior, between optional angles angle1 and angle2
+in degrees counting clockwise from the top. Keys are:
+:background       color of the sector
+:foreground       color of the arc
+:borderwidth      width of the arc
+
+(draw-ellipse pixmap x y width height [key val] ...)
+Draw an ellipse in pixmap, with interor inscribed in the rectangle
+starting at (x, y) and having dimensions width times height. Keys are:
+:background       color of interior
+:foreground       color of frame
+:borderwidth      size of frame
+
+(draw-line pixmap x1 y1 x2 y2 [key val])
+Draw a line from (x1, y1) to (x2, y2) in pixmap. The only possible key is:
+:color
+
+(draw-point pixmap x y [key val])
+Draw point (x, y) in pixmap. The only possible key is:
+:color
+
+(draw-polygon pixmap [key val])
+Fill the polygon inside the given set of points. The only possible key is:
+:color
+
+(draw-rectangle pixmap x y width height [key val] ...)
+Draw a rectangle in pixmap, with interor starting at (x, y) and
+dimensions width times height. Keys are:
+:background       color of interior
+:foreground       color of frame
+:borderwidth      size of frame
+
+(draw-rubber-circle-sector deco x y radius [angle1 angle2] [key val] ...)
+Draw a rubber circle sector or arc on decoration, with center at (x, y) and
+the given radius of the interior, and between the angles in degrees,
+clockwise from the top. Rubber drawings are shown during
+'with-user-feedback' and 'with-timer-feedback', and are erased
+automatically. Keys are: 
+:borderwidth      size of arc
+:invert-color     color to draw with XOR
+
+(draw-rubber-ellipse deco x y width height [key val] ...)
+Draw a rubber ellipse on decoration, with interor inscribed in the rectangle
+starting at (x, y) and having dimensions width times height. Rubber drawings
+are shown during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. Keys are:
+:borderwidth      size of frame
+:invert-color     color to draw with XOR
+
+(draw-rubber-line deco x1 y1 x2 y2 [key val])
+Draw a rubber line from (x1, y1) to (x2, y2) on decoration. Rubber drawings
+are shown during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. The only possible key is:
+:invert-color     color to draw with XOR
+
+(draw-rubber-point deco x y [key val])
+Draw rubber point at (x, y) on decoration. Rubber drawings are
+shown during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. The only possible key is:
+:invert-color     color to draw with XOR
+
+(draw-rubber-polygon deco [key val])
+Fill a rubber polygon inside the given set of points. Rubber drawings
+are shown during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. The only possible key is:
+:invert-color     color to draw with XOR
+
+(draw-rubber-rectangle deco x y width height [key val] ...)
+Draw a rubber rectangle on decoration, with interor starting at
+(x, y) and dimensions width times height. Rubber drawings are shown
+during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. Keys are:
+:borderwidth      size of frame
+:invert-color     color to draw with XOR
+
+(draw-rubber-text deco x y text [key val] ...)
+Draw rubber text on decoration, starting at (x, y). Rubber drawings are
+shown during 'with-user-feedback' and 'with-timer-feedback', and are
+erased automatically. Keys are:
+:font             font of text
+:angle            angle of text, clockwise in degrees
+:mirrored         mirror-reverse text if true
+:invert-color     color to draw with XOR
+
+(draw-text pixmap x y text [key val] ...)
+Draw text in pixmap, starting at (x, y). Keys are:
+:font
+:color
+:angle             angle of text, clockwise in degrees
+:mirrored          mirror-reverse text if true
+
+(end)
+Quit Gwm.
+
+(enter)
+Make a enter deco event descriptor.
+
+(event? obj)
+Return true if obj is an event descriptor.
+
+(event-code ev)
+Get key or button code from event.
+
+(event-data ev)
+Get data from a user event or a client message event.
+
+(event-deco ev)
+Return the deco that got this event.
+
+(event-key ev)
+Get key symbol from a key event.
+
+(event-modifier ev)
+Get modifiers from key, button or movement event.
+
+(event-relative-x ev)
+Get x position of event relative to its deco.
+
+(event-relative-y ev)
+Get y position of event relative to its deco.
+
+(event-time ev)
+Get event time.
+
+(event-type ev)
+Get type of event or event description as a symbol.
+
+(event-window-coords ev window)
+Get logical coordinates in window of event.
+
+(event-x ev)
+Get x position of event (relative the root).
+
+(event-y ev)
+Get y position of event (relative the root).
+
+(eventarc? obj)
+Return true if obj is a behavior event arc.
+
+(eventarc-action arc)
+Retreive the action thunk of the event arc, or a pair of thunks in the
+case of buttons or keys.
+
+(eventarc-behavior arc)
+Retrieve the new behavior state of the event arc.
+
+(eventarc-event arc)
+Retreive the event descriptor for the event arc.
+
+(eventarc-steal-resend arc)
+Retrieve the values of :steal and :resend as a pair, or false if they
+are not given or the event arc is of the wrong type.
+
+(execute args...)
+Execute the command given by the arguments. Returns process id. Use
+the function 'waitpid' in conjunction with this if you want to wait
+for completion to achieve synchronous execution. 
+
+(find-fonts string)
+Return a list of possible expansions for the font name string.
+
+(focus-in)
+Make a deco focus-in event descriptor.
+
+(focus-out)
+Make a deco focus-out event descriptor.
+
+(font? obj)
+Return true if obj is a font.
+
+(font-dimensions font)
+Get the width, height, (approximate) slant and ascent of the font.
+
+(font-name font)
+Get the name of the font.
+
+(force-show-window window)
+Make sure that the window (or icon) is mapped regardless of
+iconification state. 
+
+(free-color col1 [col2] ...)
+Free the given colors from the colormap. Use with care, things may look
+strange if the colors are still in use.
+
+(get-focus)
+Return the deco which has the focus, or #t if pointer-root, or #f if
+no or an unknown window has the focus.
+
+(get-keyword key list default_value)
+Return the value after key in the list, or the default value if key
+does not occur in the list.
+
+(get-property deco sym)
+Get property sym of deco.
+
+(get-wm-command window)
+Get the restart command from a client window.
+
+(get-x-default program option)
+Get values from the X resource database.
+
+(get-x-property window name del)
+Get X property name from window. Delete if del is given and non-false.
+
+(gwm-is-ending)
+Returns true if Gwm is currently closing all screens.
+
+(gwm-is-starting)
+Returns true if Gwm has not yet finished opening all screens.
+
+(gwm-version)
+Returns the current Gwm version as a string.
+
+(height object)
+Get the height of obj (a label, pixmap, or deco)
+
+(hide-deco deco)
+Make deco invisible. This can also be used to unmap a window.
+
+(hostname)
+Get the hostname.
+
+(icon-deco win)
+Get the icon decoration corresponding to the given window or icon deco.
+
+(icon-decorated? win)
+Check if the icon decoration for the client is realized yet.
+
+(icon-pixmap-change)
+Make a icon-pixmap-change event descriptor.
+
+(iconify-window window)
+Iconify the window.
+
+(index->screen index)
+Get the screen object from its index.
+
+(inner-deco win)
+Get the inner client (or menu) decoration corresponding to the given
+decoration. 
+
+(inspect-behavior beh [event])
+Without the optional second argument, gives a list of all event arcs
+of the behavior. With the extra event descriptor argument, returns the
+corresponding event arc if any.
+
+(inspect-deco deco [key] ...)
+Retreive from decoration obj the values of the given keys as a
+keyword list. The possible keys are the same as for 'make-deco'.
+
+(key key modifier)
+Make a key event descriptor. Takes either a key code or a key symbol.
+
+(keycode->keysym keycode mod)
+Convert a keycode and modifier to a keysym name.
+
+(keypress key modifier)
+Make a key press event descriptor. Takes either a key code or a key
+symbol. 
+
+(keyrelease key modifier)
+Make a key release event descriptor. Takes either a key code or a key
+symbol. 
+
+(keysym->keycode keysym)
+Convert the keysym name to a keycode and modifier pair.
+
+(kill-window window)
+Forcibly destroy the window. May kill the entire client program, so try
+'delete-window' first.
+
+(leave)
+Make a leave deco event descriptor.
+
+(list-of-screens)
+Get the list of all managed screens.
+
+(list-of-windows [args...])
+Get a list of managed windows. Possible arguments, given in any order, are:
+'window          only windows are returned (not icons)
+'icon            only icons
+'mapped          only mapped windows
+'stacking-order  sorted in stacking order
+'all-screens     windows on all screens (default is only on current)
+screen           only on this screen
+
+(load-image filename [key val] ...)
+Loads a pixmap from an image file, in a format handled by Imlib.
+Only supported if Gwm is compiled with Imlib. Keys are:
+:shape            'hole or 'transparent, how to treat transparent areas
+:width            scale image to width
+:height           scale image to height
+:borderwidth      borders exluded from scaling
+:foreground       (only used if reading of the file goes wrong)
+:background       (  - ' ' - )
+
+(load-pixmap filename [symbol color] ... [key val] ...)
+Loads a pixmap from file, possibly substituting colors according to
+the (symbol - color) specifications. Possible keys are:
+:xpm-closeness    color closeness value used by XpmReadFileToPixmap
+:foreground       (only used if reading of the file goes wrong)
+:background       (  - ' ' - )
+:shape            'hole or 'transparent, how to treat transparent areas
+
+(lower-window window [rel-window])
+Lower window to bottom, or just below the optional second window if given.
+
+(make-active-label string [key val] ...)
+Make an active label with string. Possible keys are:
+:font
+:foreground
+:background
+:horizontal-margin
+:vertical-margin
+
+(make-behavior [arc/behavior] ...)
+Make a new behavior out of the supplied arcs and behaviors.
+
+(make-color name)
+(make-color r g b)
+Make a color from name, possibly 'transparent or 'hole, or from the
+rgb-components of the color.
+
+(make-cursor number [key val] ...)
+(make-cursor filename [filename2] [key val] ...)
+Make a cursor, either from a number or from one or two bitmap
+files. Keys can be: 
+:foreground      foreground color of cursor
+:background      background color of cursor
+
+(make-deco [part1] [part2] ... [key val] ...)
+Make a decoration object, consisting of the given parts (which can
+be decorations, pixmaps, labels, or empty lists designating extendable
+space). Keys are:
+:direction       'horizontal or 'vertical, defaults to switch parents dir
+:width           fixed width
+:height          fixed height
+:min-width       minimum breadth of deco
+:max-width       maximum breadth of deco
+:separator       space between parts
+:margin          space before first and after last part
+:borderwidth     border width
+:bordercolor     border color
+:background      background color
+:behavior        behavior of deco
+:cursor          cursor to use over deco
+:anchor          specifies fixed point/points for floating parts
+:property        association list of properties
+:opening         thunk to run when decoration is opened
+:closing         thunk to run when decoration is closed
+
+(make-font string)
+Load the font with the name string.
+
+(make-label label [key val] ...)
+Make a pixmap with a text label. Keys are:
+:font
+:background
+:foreground
+:horizontal-margin
+:vertical-margin
+:angle             angle of text, clockwise in degrees
+:mirrored          mirror-reverse text if true
+
+(make-pixmap width height [key val])
+(make-pixmap filename [key val] ...)
+(make-pixmap background [filename1 color1] ...)
+Construct a pixmap either with dimensions width and height, or from
+the bitmap in filename, or by combining several bitmap files using
+different colors. The first form considers the key :background,
+and the second form the keys :foreground and :background.
+
+(map-event)
+Make a map deco event descriptor.
+
+(modify-behavior behavior [arc/behavior] ...)
+Change the arcs in the behavior according to the supplied arcs and
+behaviors. 
+
+(modify-deco deco [key val] ...)
+Change the values in deco of the given keys. Possible keys
+are the same as for 'make-deco'.
+
+(move-event)
+Make a move deco event descriptor.
+
+(move-resize-window window x y width height)
+Move and resize window in one operation (bypassing gravity hint).
+
+(move-window window x y)
+Move window to (x,y).
+
+(movement)
+Make a pointer movement event descriptor.
+
+(multi-button button modifier num)
+Make a multiple click event descriptor.
+
+(name-change)
+Make a name-change event descriptor.
+
+(on-event event-descriptor thunk [key val] ...)
+(on-event key-or-button-event-descriptor thunk1 [thunk2] [key val] ...)
+Make an event arc for a behavior. When an event matching event-descriptor
+occurs, the thunk is run. The second form is for keys, buttons and
+multibuttons, which may take one thunk to run at press and one to run at
+release. Keywords are:
+:behavior        New behavior for the state machine.
+:steal           Steal corresponding events from parts.
+:resend          Steal events from parts and resend them when done.
+The last two keywords can only be given for events that are meaningful
+to steal from inner decorations or clients, i.e. buttons or keys and
+their presses and releases.
+
+(pixmap? obj)
+Return true if obj is a pixmap.
+
+(place-menu deco screen [x y] [key val] ...)
+Place deco (previously realized or not) as a fixed menu on screen at
+optional coordinates x and y. Possible keys are:
+:name            Menu windows name
+:icon-name       Menu windows icon name
+:class-name      Menu windows client class name
+:client-name     Menu windows client name
+:gravity         Gravity of menu window
+:decoration      Special decoration function instead of 'describe-window'
+
+(pointer-position)
+Return a list with current x, y, modifiers, and screen of the pointer.
+
+(pop-menu deco screen [x y] [key val] ...)
+Open deco as a popup menu on screen at optional coordinates (x,y) and
+let it grab the server. Possible keys are:
+:grab-keyboard   keyboard events are also grabbed
+:confine-pointer confine pointer within deco
+:menu-parent     decoration which popped this menu and keeps the grab
+:cursor          cursor to use during the grab
+
+(process-events)
+Recursively process events as long as there are any in the queue.
+
+(process-exposes)
+Process any expose events.
+
+(property-change name)
+Make a property-change event descriptor, for the property name (a symbol).
+
+(quit)
+user_end
+
+(raise-window window [rel-window])
+Raise window to top, or just above the optional second window if given.
+
+(realize-menu deco screen)
+Make deco valid as a menu on screen, so that e.g. dimensions
+can be found out.
+
+(redecorate-window window [key val])
+Reconstruct the decorations for the window and icon of the
+client. Possible key: 
+:decoration     Alternative decoration function instead of 'describe-window'
+
+(refresh [window])
+Refresh the the given window or all windows on the screen.
+
+(refresh-deco deco)
+Refresh the given deco. More efficient than the function 'refresh' if
+a specific decoration (and not a client window) is to be redrawn.
+
+(register-gnome-compliance)
+Register gnome compliance, i.e. signal to the clients that some
+gnome compliance is supported.
+
+(register-gnome-feature sym)
+Signal to the clients that the feature sym (a symbol) is supported by
+this Gwm profile.
+
+(resize-event)
+Make a resize deco event descriptor.
+
+(resize-window window width height)
+Resize window to width times height. Use the gravity hint to decide
+which sides should stay fixed. Only real client windows can be resized
+with this function. 
+
+(restart [args...])
+Restart Gwm, or start the program given by the optional arguments.
+
+(root-deco deco)
+Get screen of deco.
+
+(root-window)
+Get the current root window.
+
+(rotate-cut-buffers arg)
+Rotate the cut buffers arg steps.
+
+(screen)
+root_window
+
+(screen-count)
+Get the number of managed screens.
+
+(screen-depth [screen])
+Get the depth of the screen (current or given).
+
+(screen-height [screen])
+Get the height of the screen (current or given) in pixels.
+
+(screen-heightMM [screen])
+Get the heigth of the screen (current or given) in millimeters.
+
+(screen-index [screen])
+Get the index of the screen (the current screen if no argument).
+
+(screen-width [screen])
+Get the width of the screen (current or given) in pixels.
+
+(screen-widthMM [screen])
+Get the width of the screen (current or given) in millimeters.
+
+(screen-type [screen])
+Get the visual type of the screen (current or given): mono, gray, or color.
+
+(send-button-to-window window button modifier x y)
+Send synthetic button events to the window, for pressing and releasing
+the button at position (x, y) relative the window.
+
+(send-client-message window name arg [...])
+Send a client message event with name (a symbol) to window. The following
+args can be either a string, some numbers, or some symbols.
+
+(send-key-to-window window key modifier)
+Send a synthetic key event to the window. Key can be either a key code
+or a key symbol.
+
+(send-string-to-window window string modifier)
+Send synthetic key events to the window, transfering the characters
+of the string.
+
+(send-timer-event tag deco del [key val])
+Send a delayed user event to a decoration, after del seconds (a real
+number).  The tag can be either a symbol identifying the user event,
+or a list beginning with such a tag. Unlike for 'send-user-event', the
+event is not sent to the parts of the deco, unless the key :propagate
+is set to true.
+
+(send-user-event tag deco [key val])
+Send a user event to a decoration. The tag can be either a symbol
+identifying the user event, or a list beginning with such a tag. The
+user event is sent to all parts of deco as well, unless the key
+:propagate is set to false.
+
+(set-colormap-focus! window)
+Set the used colormap to that of the given window or screen.
+
+(set-cut-buffer! string)
+Set contents of X cut buffer number 0.
+
+(set-deco-anchor! deco anchor)
+Set the anchor of the deco. If a decoration has an anchor, it is
+considered to be free-floating, i.e. instead of being placed next to
+the other subdecorations, it is placed wherever the anchor specifies.
+The anchor can be a list of zero, two or four elements. Zero elements
+means no anchor, two fixes the position, and four fixes the position
+and size of the decoration in its parent. Each element is either a
+positive integer (offset of left/upper edge from left/upper side of
+parent), a negative integer (offset minus one of right/lower edge from
+right/lower side of parent), or a list of three numbers where the first
+is a real number (typically but not necessarily between 0 and 1) as a
+proportion in the decoration, the second an integer offset and the
+third a real number as a proportion of the parent decoration. For
+example, (0.5 0 0.5) means that the centers of the decorations should
+be aligned, (0 5 0) means the same as 5, and (1 -3 1) means the same
+as -4.
+
+(set-deco-background! deco color)
+Set background color of deco.
+
+(set-deco-behavior! deco beh)
+Set the behavior of deco.
+
+(set-deco-bordercolor! deco color)
+Set border color of deco.
+
+(set-deco-borderwidth! deco width)
+Set border width of deco.
+
+(set-deco-cursor! deco cursor)
+Set the cursor to use over deco.
+
+(set-deco-part! deco num obj)
+Replace sub-decoration number num of deco with obj.
+
+(set-deco-properties! deco property)
+Set the property list of deco.
+
+(set-focus! deco)
+Set focus to deco, or to pointer-root if argument is #t. To set focus to
+a client window, call 'set-focus' on the inner-deco of the window.
+
+(set-icon-sizes! minwidth minheight maxwidth maxheight incwidth incheight)
+Set icon size preferences.
+
+(set-key-mapping! keycode keysym1 [keysym2] ... [keysym8])
+Change keyboard mapping for keycode to the given keysyms.
+
+(set-pointer-acceleration! num den)
+Set pointer acceleration parameters.
+
+(set-pointer-threshold! threshold)
+Set number of pixels to move before pointer acceleration is used.
+
+(set-property! deco sym val)
+Set property sym of deco to val.
+
+(set-root-window! screen)
+Set the current root window to screen (or if a window is given, to its
+screen). 
+
+(set-screen! screen)
+Set the current root window to screen (or if a window is given, to its
+screen). (Equivalent to 'set-root-window!')
+
+(set-screen-saver! timeout interval preferblanking allowexposures)
+Set screen saver parameters.
+
+(set-subwindow-colormap-focus! window [index])
+Change the colormap focus between the subwindows of window. An optional
+second argument is the index of the subwindow to use.
+
+(set-window-gravity! window val)
+Set the window gravity hint.
+
+(set-window-group! window gl)
+Set the window group of the window, by either specifying the group leader,
+or a list of the entire group. An empty list removes the window from
+any group. 
+
+(set-window-icon-name! window name)
+Set the name of icon of the client window.
+
+(set-window-name! window name)
+Set the name of the client window.
+
+(set-window-size! window list)
+Resize window to the width and height in list given in logical units.
+
+(set-x-property! window name value app)
+Set X property name on window to value. Append if app is given and
+non-false. 
+
+(sleep sec)
+Wait (at least) the given number of seconds (a real number). Always
+returns 0 for compatibility with the standard sleep function.
+
+(show-deco deco)
+Make a previously invisible deco visible.
+
+(stack-event)
+Make a deco stacking change event descriptor.
+
+(string-dimensions object font [key val] ...)
+Get the width, height, left bearing and ascent of the string when using
+the font. Possible keys are:
+:angle           angle of text, clockwise in degrees
+:mirrored        mirror-reverse text if true
+
+(top-deco win)
+Get the top-most parent of the given decoration.
+
+(triple-button button modifier)
+Make a triple-click event descriptor.
+
+(unforce-show-window window)
+Remove the effect of 'force-show-window'.
+
+(unmap-event)
+Make a unmap deco event descriptor.
+
+(unpop-menu menu)
+Unpop the menu and ungrab the server.
+
+(unrealize-menu deco)
+Make deco invalid as a menu, e.g. so that its parts can be used elsewhere.
+
+(unregister-gnome-compliance)
+Unregister gnome compliance.
+
+(unregister-gnome-feature sym)
+Signal to the clients that the feature sym (a symbol) is not supported
+by this Gwm profile.
+
+(user-event tag)
+Make a user event descriptor, identified by tag.
+
+(usleep usec)
+Waits (at least) the given number of microseconds (actually rounded
+to a whole number of milliseconds).
+
+(wait-for-release ev delay)
+At a press event, wait for the corresponding release before continuing.
+If the optional delay is given (a real number), wait at most this many
+seconds. 
+
+(warp-pointer x y [deco])
+Move pointer to (x, y) relative to the current position, or relative
+to the decoration in the optional argument.
+
+(width object)
+Get the width of obj (a label, pixmap, or deco)
+
+(window->client-xid window)
+Get the X id corresponding to the client window.
+
+(window-at-position x y scr)
+Return the window at position (x, y) on the screen.
+
+(window-client-borderwidth window)
+Get borderwidth of the inner client window. Equivalent to
+'(deco-borderwidth (inner-deco window))' 
+
+(window-client-class window)
+Get the client class of the window.
+
+(window-client-height window)
+Get height of the inner client window. Equivalent to 
+'(deco-height (inner-deco window))'
+
+(window-client-name window)
+Get the client name of the window.
+
+(window-client-shaped? window)
+Check if the inner client has a shaped window.
+
+(window-client-width window)
+Get width of the inner client window. Equivalent to 
+'(deco-width (inner-deco window))'
+
+(window-client-x window)
+Get x position of the inner client window. Equivalent to 
+'(deco-x (inner-deco window))'
+
+(window-client-y window)
+Get y position of the inner client window. Equivalent to 
+'(deco-y (inner-deco window))'
+
+(window-deco win)
+Get the window decoration corresponding to the given window or icon deco.
+
+(window-focusable? window)
+Check if the client window can take focus.
+
+(window-gravity window)
+Get the window gravity hint.
+
+(window-group window)
+Get the window group of the window, or an empty list if there are no group.
+
+(window-height window)
+Get height of the top-most parent window, including borderwidth
+
+(window-icon-name window)
+Get the name of icon of the client window.
+
+(window-icon-pixmap window [key val] ...)
+Get the pixmap to use for the icon, if the client has specified any.
+Uses the keys:
+:background
+:foreground
+
+(window-icon-pixmap-id window)
+Get the X id for the client specified icon bitmap. May be used to
+keep track of changes.
+
+(window-icon-window window)
+Get the specific window to use for the icon, if any.
+
+(window-iconified? window)
+Check if window is iconified.
+
+(window-machine-name window)
+Get the name of the host on which the client runs.
+
+(window-mapped? window)
+Check if window is mapped.
+
+(window-max-size window)
+Return a list of the maximum width and height in pixels according
+to the windows size hints. Unintuitively, (-1 -1) means unlimited.
+
+(window-min-size window)
+Return a list of the minimum width and height in pixels according
+to the windows size hints.
+
+(window-name window)
+Get the name of the client window.
+
+(window-program-set-position? window)
+Return true if the program has specified a position of the client window.
+
+(window-program-set-size? window)
+Return true if the program has specified a size of the client window.
+
+(window-size window)
+Return a list of the width and height of window in logical units.
+
+(window-transient-for window)
+Check if window is a transient window, and for which window.
+
+(window-user-set-position? window)
+Return true if the user specified the position of the client window
+(via e.g. a -geometry argument).
+
+(window-user-set-size? window)
+Return true if the user specified the size of the client window
+(via e.g. a -geometry argument).
+
+(window-valid? deco)
+Check if window is an opened and valid window.
+
+(window-was-on-screen window)
+Returns true if the window was on screen before Gwm started.
+
+(window-width window)
+Get width of the top-most parent window, including borderwidth
+
+(window-x window)
+Get x position of the top-most parent window. Equivalent to 
+'(deco-x (top-deco window))'
+
+(window-y window)
+Get y position of the top-most parent window. Equivalent to 
+'(deco-y (top-deco window))'
+
+(with-grabbed-server deco thunk [key val] ...)
+Run thunk with the X server grabbed, and events redirected to deco.
+Keys are:
+:grab-keyboard
+:confine-pointer
+:grab-children
+:cursor
+
+(with-timer-feedback thunk delay times [key val] ...)
+(with-timer-feedback thunk delay-thunk [key val] ...)
+Run thunk a number of times with delays between. If delay and times
+are given, run it that many times with that delay. If delay-thunk is
+given, the delay is given by the return of this thunk, and the loop
+stops when the thunk return false (or something that is not a
+number). The server will be grabbed during the loop, unless the
+key :no-freeze is set to true. Rubber drawings made by the thunks
+are shown until the next call to them. Keys are:
+:no-freeze
+:cursor
+
+(with-user-feedback thunk event [key val] ...)
+(with-user-feedback thunk stop-thunk [key val] ...)
+For each motion, press or release event, run thunk with that event
+as argument. If an event is given as argument to 'with-user-feedback,
+the first call to thunk is with that event, and the loop stops when
+a matching release (or another press) occurs. If a stop-thunk is
+given instead, the loop continues until the stop-thunk returns true
+for a received event. In the first case the return value is the last
+event, in the second case the return value is the result of
+stop-thunk. The server will be grabbed during the loop, unless the
+key :no-freeze is set to true. Rubber drawings made by the thunks
+are shown until the next event. Keys are:
+:no-freeze
+:cursor
+
+(xevent? obj)
+Return true if obj is an X-event.
+
+(xid->deco id)
+Find decoration from its X id.
+

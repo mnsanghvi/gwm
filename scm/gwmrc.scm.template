@@ -1,0 +1,98 @@
+;; gwmrc.scm
+;;
+;; In this file you can specify your personal settings for Gwm.
+;; Copy it to your home directory and modify it.
+
+(define-module (guile-user) :use-module (ice-9 debug))
+(debug-enable 'backtrace)
+
+(require 'icon-mgr)
+(require 'zoom-window "zoom")
+(require 'pick-window "pick")
+
+(require 'virtual)
+(require 'virtual-map)
+(require 'virtual-door)
+(require 'virtual-pan)
+
+(require 'rooms)
+
+(require 'fvwm-window)
+(require 'fvwm-icon)
+(require 'fvwm-menu-context "fvwm-menu")
+
+(set! virtual-horizontal-step (screen-width))
+(set! virtual-vertical-step (screen-height))
+(set! virtual-nailed-list '(Gwm XLoad XClock XBiff XBatt XConsole "^gwm"))
+(set! virtual-omit-nailed #f)
+(set! virtual-omit-list '(XLoad XClock XBiff XBatt Gwm))
+(set! virtual-fancy-colors '((#f #f "lightgray") (#t #f "white")))
+(set! virtual-background "lightyellow")
+(set! virtual-xpos -168)
+(set! virtual-ypos 4)
+(set! virtual-size '(2 2))
+
+(set! initial-doors '("Home" "Free"))
+(set! door-background "lightyellow")
+(set! door-borderwidth 1)
+(set! door-mgr-xpos 4)
+(set! door-mgr-ypos 4)
+
+(set! initial-rooms '(main other))
+(set! rooms-omit-list '(XLoad XClock XBiff XBatt Gwm XConsole "^gwm"))
+
+(set! icon-mgr-title-background "khaki")
+(set! icon-mgr-background "lightyellow")
+(set! icon-mgr-sort #t)
+(set! iconify-on-start-list '(XConsole "^gwm"))
+(set! icon-mgr-omit-list `(XLoad XClock XBiff XBatt Gwm ,window-transient-for))
+(set! icon-mgr-xpos -5)
+(set! icon-mgr-ypos 4)
+
+(set! fvwm-color-styles '(("^gwm" "tan" "orange")
+                          ("^su" "gray50" "black" "black" "gray")
+                          (XConsole "tan" "tan")
+                          (XTerm "grey")
+                          (Emacs "lightblue")))
+(set! fvwm-window-styles
+      `((,(lambda (w) (matches-list w '(XClock XLoad XBiff XBatt Gwm)))
+         :frame #t :resize #f :title #f :frame-width 5 :color "tan"
+         :active-color #f :outer-border #f :inner-border #f)))
+(set! fvwm-border-action (lambda (w e) (raise-lower-move-window w e)))
+(set! fvwm-virtual-colors #t)
+(set! fvwm-icon-assoc-list '((Emacs . "emacs")))
+(set! fvwm-menu-color "wheat2")
+
+(set! raise-on-resize #t)
+(set! raise-on-move #t)
+(set! screen-cursor (make-cursor 68))
+
+(set! zoom-window-method-list `((XTerm . ,zoom-window-vert)
+                                (XVroot . ,zoom-window-prop)
+                                (#t . ,zoom-window-full)))
+
+(set-window #t fvwm-window)
+(set-icon #t fvwm-icon)
+
+(define top-place-order '(XBiff XBatt XClock XLoad))
+(define top-placement 
+  (make-tiled-placement -341 4 200 5 'horizontal
+                        :separator 3
+                        :sort (lambda (w1 w2)
+                                (< (or (list-index top-place-order (string->symbol (window-client-class w1))) 1000)
+                                   (or (list-index top-place-order (string->symbol (window-client-class w2))) 1000)))))
+(define right-placement
+  (make-tiled-placement -5 200 4 (screen-height) 'vertical))
+
+(set-placement 'XBiff top-placement)
+(set-placement 'XBatt top-placement)
+(set-placement 'XClock top-placement)
+(set-placement 'XLoad top-placement)
+
+(set-icon-placement #t right-placement)
+
+(set! default-menu-style fvwm-menu-context)
+
+;; menu specifications in a separate file
+(primitive-load-path "menurc.scm")
+

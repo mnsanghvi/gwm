@@ -1,0 +1,214 @@
+dnl   configuration script for GWM-2.0
+dnl   Process this file with autoconf to produce configure.
+
+AC_INIT(Makefile.in)
+VERSION=2.1
+PACKAGE=gwm2
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+AM_CONFIG_HEADER(src/gwmconfig.h)
+
+#--------------------------------------------------------------------
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CPP
+
+AC_AIX
+AC_ISC_POSIX
+AC_MINIX
+
+AC_LIBTOOL_DLOPEN
+AM_PROG_LIBTOOL
+AM_PROG_CC_STDC
+
+AC_C_CONST
+AC_C_INLINE
+
+AC_HEADER_STDC
+AC_HEADER_TIME
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(assert.h limits.h signal.h ctype.h \
+errno.h sys/select.h sys/time.h sys/timeb.h sys/types.h \
+sys/stat.h sys/file.h sys/utsname.h sys/resource.h \
+sys/utime.h time.h unistd.h utime.h)
+AC_CHECK_HEADERS(getopt.h)
+AC_FUNC_WAIT3
+AC_CHECK_FUNCS(ftime select sigaction setpgid gethostname waitpid usleep)
+AC_CHECK_FUNCS(bzero bcopy strchr strcat index)
+AC_PATH_X
+AC_PATH_XTRA
+
+AC_TYPE_SIGNAL
+
+### Check for a declaration of FUNCTION in HEADERFILE; if it is
+### not there, #define MISSING_FUNCTION_DECL.
+AC_DEFUN([GWM_FUNC_DECLARED], [
+  AC_CACHE_CHECK(for $1 declaration, gwm_cv_func_$1_declared,
+    AC_EGREP_HEADER($1, $2,
+		    gwm_cv_func_$1_declared=yes, 
+		    gwm_cv_func_$1_declared=no))
+  if test [x$gwm_cv_func_]$1[_declared] = xno; then
+    AC_DEFINE([MISSING_]translit($1, [a-z], [A-Z])[_DECL])
+  fi
+])
+
+GWM_FUNC_DECLARED(strchr, string.h)
+GWM_FUNC_DECLARED(bzero, string.h)
+GWM_FUNC_DECLARED(bcopy, string.h)
+GWM_FUNC_DECLARED(sleep, unistd.h)
+GWM_FUNC_DECLARED(usleep, unistd.h)
+GWM_FUNC_DECLARED(gethostname, unistd.h)
+GWM_FUNC_DECLARED(wait3, sys/wait.h)
+GWM_FUNC_DECLARED(ftime, sys/timeb.h)
+GWM_FUNC_DECLARED(rl_deprep_terminal, readline/readline.h)
+
+AC_CHECK_LIB(m, main)
+
+AC_CHECK_LIB(X11, XOpenDisplay, x_libs="-lX11 $X_EXTRA_LIBS", no_x11_lib=yes,
+             $X_LIBS $X_EXTRA_LIBS)
+AC_CHECK_LIB(X11, XGetWMName, AC_DEFINE([HAVE_XGETWMNAME]), ,
+             $X_LIBS $X_EXTRA_LIBS)
+
+XEXT_LIB=""
+AC_CHECK_LIB(Xext, XShapeCombineMask, [
+XEXT_LIB="-lXext"
+AC_DEFINE([HAVE_SHAPE])
+], AC_MSG_WARN(libXext not found -- required by Gwm)
+, $X_LIBS $x_libs)
+
+dnl # Check for the Xpm library #
+XPM_LIB=""
+AC_CHECK_LIB(Xpm, XpmReadFileToPixmap, [
+XPM_LIB="-lXpm"
+AC_DEFINE([HAVE_LIBXPM])
+], AC_MSG_WARN(libXpm not found -- required by Gwm)
+, $X_LIBS $x_libs)
+
+x_cflags="$X_CFLAGS"
+x_ldflags="$X_LDFLAGS $X_LIBS"
+
+AC_SUBST(x_cflags)
+AC_SUBST(x_includes)
+AC_SUBST(x_ldflags)
+AC_SUBST(x_libs)
+AC_SUBST(XEXT_LIB)
+AC_SUBST(XPM_LIB)
+
+AC_PATH_PROGS(GUILE_CONFIG, guile-config build-guile, no)
+
+GUILE_LIBS=""
+GUILE_INCLUDES=""
+
+if test "no" != "$GUILE_CONFIG"; then
+  if (${GUILE_CONFIG} link) >/dev/null 2>&1; then
+    GUILE_LIBS="`${GUILE_CONFIG} link`"
+    GUILE_INCLUDES="`${GUILE_CONFIG} compile`"
+  fi
+fi
+
+if test "" = "$GUILE_LIBS"; then
+  AC_CHECK_LIB(guile, main, GUILE_LIBS="-lguile",,)
+  AC_CHECK_LIB(m, sin, GUILE_LIBS="-lm $GUILE_LIBS",,)
+  AC_CHECK_LIB(rx, main, GUILE_LIBS="-lrx $GUILE_LIBS",,)
+  AC_CHECK_LIB(qt, main, GUILE_LIBS="-lqt $GUILE_LIBS",,)
+  AC_CHECK_LIB(dl, dlopen, GUILE_LIBS="-ldl $GUILE_LIBS",,)
+fi
+
+AC_CHECK_LIB(termcap, tgoto, [
+	AC_CHECK_LIB(readline, readline, [
+	READLINE_LIBS="-lreadline -ltermcap"
+	AC_CHECK_LIB(readline, add_history, AC_DEFINE([HAVE_HISTORY]),,"-ltermcap")
+	AC_DEFINE([HAVE_READLINE])
+	], READLINE_LIBS="", "-ltermcap")  
+], AC_CHECK_LIB(ncurses, tgoto, [
+	AC_CHECK_LIB(readline, readline, [
+		READLINE_LIBS="-lreadline -lncurses"
+		AC_CHECK_LIB(readline, add_history, AC_DEFINE([HAVE_HISTORY]),,"-lncurses")
+	AC_DEFINE([HAVE_READLINE])
+	], READLINE_LIBS="", "-lncurses")
+], READLINE_LIBS=""))
+
+AC_CHECK_HEADERS(guile-readline/readline.h)
+
+AC_CHECK_LIB(guilereadline-v-12, scm_readline, [
+	READLINE_LIBS="-lguilereadline-v-12 $READLINE_LIBS"
+	AC_DEFINE([HAVE_GUILEREADLINE])
+], AC_CHECK_LIB(guilereadline, scm_readline, [
+	READLINE_LIBS="-lguilereadline $READLINE_LIBS"
+	AC_DEFINE([HAVE_GUILEREADLINE])
+	], ,$GUILE_LIBS $READLINE_LIBS),
+,$GUILE_LIBS $READLINE_LIBS)
+
+if test "" != "$READLINE_LIBS"; then
+    AC_CACHE_CHECK(
+      "whether readline needs functions to be casted to VFunction",
+      gwm_cv_need_rl_function_cast,
+      [ac_compile='${CXX-g++} -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
+       AC_TRY_COMPILE([
+#include <stdio.h>
+#include <readline/readline.h>
+void testf(char* str) { };
+         ],[
+rl_callback_handler_install("", testf);
+         ],
+         [gwm_cv_need_rl_function_cast=no],
+         [gwm_cv_need_rl_function_cast=yes]
+       )]
+    )
+fi
+
+AC_CACHE_CHECK(
+      "whether guile needs functions to be casted to no arg",
+      gwm_cv_need_guile_function_cast,
+      [ac_compile='${CXX-g++} -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
+       AC_TRY_COMPILE([
+#include <guile/gh.h>
+void testf() { };
+         ],[
+scm_make_gsubr("", 0, 0, 0, (SCM (*)(...)) testf);
+         ],
+         [gwm_cv_need_guile_function_cast=no],
+         [gwm_cv_need_guile_function_cast=yes]
+       )]
+)
+
+#          AC_DEFINE([NEED_GUILE_FUNCTION_CAST])]
+#          AC_DEFINE([NEED_RL_FUNCTION_CAST])]
+
+AC_SUBST(GUILE_LIBS)
+AC_SUBST(GUILE_INCLUDES)
+AC_SUBST(READLINE_LIBS)
+
+AC_PATH_PROGS(IMLIB2_CONFIG, imlib2-config, no)
+AC_PATH_PROGS(IMLIB_CONFIG, imlib-config, no)
+
+if test "no" != "$IMLIB2_CONFIG"; then
+  if (${IMLIB2_CONFIG} --version) >/dev/null 2>&1; then
+    IMLIB_LIBS="`${IMLIB2_CONFIG} --libs`"
+    IMLIB_CFLAGS="`${IMLIB2_CONFIG} --cflags`"
+    AC_CHECK_LIB(Imlib2, imlib_context_set_display, AC_DEFINE([HAVE_IMLIB_2],1), [
+	IMLIB_LIBS=""
+	IMLIB_CFLAGS=""
+	], $IMLIB_LIBS)
+  fi
+else    
+  if test "no" != "$IMLIB_CONFIG"; then
+    if (${IMLIB_CONFIG} --version) >/dev/null 2>&1; then
+      IMLIB_LIBS="`${IMLIB_CONFIG} --libs`"
+      IMLIB_CFLAGS="`${IMLIB_CONFIG} --cflags`"
+      AC_CHECK_LIB(Imlib, Imlib_init_with_params, AC_DEFINE([HAVE_IMLIB],1), [
+	IMLIB_LIBS=""
+	IMLIB_CFLAGS=""
+	], $IMLIB_LIBS)
+    fi
+  else
+    IMLIB_LIBS=""
+    IMLIB_CFLAGS="" 
+  fi
+fi
+
+
+AC_SUBST(IMLIB_LIBS)
+AC_SUBST(IMLIB_CFLAGS)
+
+AC_OUTPUT([Makefile src/Makefile scm/Makefile])

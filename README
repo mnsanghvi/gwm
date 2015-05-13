@@ -1,0 +1,15 @@
+This is Gwm-2.1, the Generic Window Manager version 2.1.
+
+There is a quickstart text in the doc/ subdirectory for you who cannot
+wait to get started. Otherwise, there are general installation
+instructions in the file INSTALL (in the top directory), and a manual
+for Gwm-2.0 in the doc/ directory. There are also plenty of example
+code in the subdirectories scm/ and scm/demo/, as well as an example
+profile in "scm/gwmrc.scm.template" and "scm/menurc.scm.template". 
+
+Please let me know about all problems, both building and running
+and programming Gwm-2.1, and I will try to fix them.
+
+Best Regards
+  Anders Holst (aho@sics.se)
+

@@ -1,0 +1,31 @@
+ignore-modifiers
+
+Alternativ:
+
+
+* Global eller lokal eller båda?
+  Fördel global: Konsekvent, lättfattligt, går att ändra dynamiskt
+  Nackdel global: global variabel, luktar specialhack
+
+  Fördel lokalt: Kraftfullt och generellt
+  Nackdel lokalt: Förvirrande, tvetydigt 
+
+  Fördel båda: Enkelt som default, går att göra avancerat om man vill
+  Nackdel båda: Fortfarande förvirrande och tvetydigt
+
+* ignore eller relevant eller negativa
+  Svar: significant-modifiers eller relevant-modifiers
+
+
+Om man väntar på två events:
+  button 1 med alt, och shift irrelevant (alt, alt)
+  button 1 med shift, och alt irrelevant (shift, shift)
+Vilken vinner vid alt-shift ?
+
+(shift, shift+alt)
+
+(shift, shift)
+
+(shift-alt)
+
+Beslut: Global variabel

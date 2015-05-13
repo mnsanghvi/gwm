@@ -1,0 +1,25 @@
+client.cc: 
+*** 329,337 ****
+    if (!dproc)
+      dproc = GWM_VREF(v_describe_window);
+    if (dproc == SCM_UNDEFINED) {
+!     if (!GWM_WidgetMode)
+!       gwm_warning("\"describe-window\" is undefined, using empty decoration",
+!                   0);
+      desc = inner;
+    } else {
+      SetContext(scr);
+--- 329,339 ----
+    if (!dproc)
+      dproc = GWM_VREF(v_describe_window);
+    if (dproc == SCM_UNDEFINED) {
+!     XSetWindowAttributes wa;
+!     wa.override_redirect = 0;
+!     XChangeWindowAttributes(dpy, cw->InnerWin(), CWOverrideRedirect, &wa);
+! //    gwm_warning("\"describe-window\" is undefined, using empty decoration",
+! //                0);
+      desc = inner;
+    } else {
+      SetContext(scr);
+
+
