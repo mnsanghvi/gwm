@@ -17,14 +17,13 @@ compiler:
 
 addons:
    apt:
-   packages:
+     packages:
       - g++
       - reprepro
       - devscripts
       - coreutils
-      - guile
-      - libguile-dev
-      - libx11-dev
+      - guile-1.8-libs
+      - xorg-dev
       
   
 # before_install:
