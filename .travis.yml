@@ -1,0 +1,56 @@
+sudo: false
+language: cpp
+
+## notifications
+notifications:
+   email: off
+
+## whitelist
+#branches:
+#  only:
+#      - build-ci
+
+## whitelist - end
+
+compiler:
+  - g++
+
+addons:
+   apt:
+   packages:
+      - g++
+      - reprepro
+      - devscripts
+      - coreutils
+  
+# before_install:
+
+# install:
+
+# before_script:
+
+#script:
+#     - ./configure
+#     - make
+     
+after_failure:
+   - cat configure.log
+
+
+# after_success:
+
+## optional
+# before_deploy:
+
+## optional
+# deploy:
+
+## optional
+# after_deploy:
+
+# after_script:
+
+
+
+
+##### END OF FILE #####
