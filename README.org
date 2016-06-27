@@ -1,3 +1,5 @@
+Build status:  master [https://travis-ci.org/mnsanghvi/gwm.svg?branch=master] build-ci [https://travis-ci.org/mnsanghvi/gwm.svg?branch=build-ci]
+
 * GWM: The X11 Generic Window Manager
 
 ** Background
