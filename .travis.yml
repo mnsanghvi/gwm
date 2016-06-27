@@ -22,6 +22,10 @@ addons:
       - reprepro
       - devscripts
       - coreutils
+      - guile
+      - libguile-dev
+      - libx11-dev
+      
   
 # before_install:
 
